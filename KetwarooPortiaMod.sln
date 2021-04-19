@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaMod", "KetwarooPortiaMod\KetwarooPortiaMod.csproj", "{6D460949-719B-417E-96D6-019012F63B40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaModOtherSettings", "KetwarooPortiaModOtherSettings\KetwarooPortiaModOtherSettings.csproj", "{0B153417-0208-4E1A-9911-ED09C849A5BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaModEnableDlc", "KetwarooPortiaModEnableDlc\KetwarooPortiaModEnableDlc.csproj", "{59C8A0CF-0448-4100-AA0E-619B3CBB0EBC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6D460949-719B-417E-96D6-019012F63B40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D460949-719B-417E-96D6-019012F63B40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D460949-719B-417E-96D6-019012F63B40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D460949-719B-417E-96D6-019012F63B40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B153417-0208-4E1A-9911-ED09C849A5BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B153417-0208-4E1A-9911-ED09C849A5BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B153417-0208-4E1A-9911-ED09C849A5BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B153417-0208-4E1A-9911-ED09C849A5BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59C8A0CF-0448-4100-AA0E-619B3CBB0EBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59C8A0CF-0448-4100-AA0E-619B3CBB0EBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59C8A0CF-0448-4100-AA0E-619B3CBB0EBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59C8A0CF-0448-4100-AA0E-619B3CBB0EBC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E522106B-5658-4C86-B49F-07D70F7277C4}
+	EndGlobalSection
+EndGlobal
