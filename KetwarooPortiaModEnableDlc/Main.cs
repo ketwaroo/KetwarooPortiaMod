@@ -60,7 +60,6 @@ namespace KetwarooPortiaModEnableDlc
     }
 
 
-
     public class Settings : UnityModManager.ModSettings, IDrawable
     {
 
@@ -165,7 +164,7 @@ namespace KetwarooPortiaModEnableDlc
 
             __result = Main.modSettings.isDlcEnabled(__state);
 
-            Main.mod.Logger.Log(string.Format("{0},{1}",__state,__result));
+            //Main.mod.Logger.Log(string.Format("{0},{1}",__state,__result));
         }
     }
 }

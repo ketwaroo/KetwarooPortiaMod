@@ -1,0 +1,8 @@
+{
+  "Id": "KetwarooPortiaMod",
+  "DisplayName": "",
+  "Author": "ketwaroo",
+  "Version": "0.1.0",
+  "AssemblyName": "KetwarooPortiaMod.dll",
+  "EntryMethod": "KetwarooPortiaMod.Main.Load"
+}

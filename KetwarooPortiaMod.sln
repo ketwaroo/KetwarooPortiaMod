@@ -5,9 +5,15 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaMod", "KetwarooPortiaMod\KetwarooPortiaMod.csproj", "{6D460949-719B-417E-96D6-019012F63B40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaModOtherSettings", "KetwarooPortiaModOtherSettings\KetwarooPortiaModOtherSettings.csproj", "{0B153417-0208-4E1A-9911-ED09C849A5BD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaModEnableDlc", "KetwarooPortiaModEnableDlc\KetwarooPortiaModEnableDlc.csproj", "{59C8A0CF-0448-4100-AA0E-619B3CBB0EBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaModGiveItem", "KetwarooPortiaModGiveItem\KetwarooPortiaModGiveItem.csproj", "{7F9F4779-DDE6-46B4-9DA0-C8A60EF45200}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaModActorRescale", "KetwarooPortiaModActorRescale\KetwarooPortiaModActorRescale.csproj", "{1152BD01-6FEB-4D0F-BB33-99FA3F1F19AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaModRuinDiving", "KetwarooPortiaModRuinDiving\KetwarooPortiaModRuinDiving.csproj", "{F9DE2D94-286C-4B46-B67E-9A8E0320FCD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaModPlayerActions", "KetwarooPortiaModPlayerActions\KetwarooPortiaModPlayerActions.csproj", "{26B34DDE-C3B6-4253-8CDB-19292930C035}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +25,26 @@ Global
 		{6D460949-719B-417E-96D6-019012F63B40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D460949-719B-417E-96D6-019012F63B40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D460949-719B-417E-96D6-019012F63B40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0B153417-0208-4E1A-9911-ED09C849A5BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B153417-0208-4E1A-9911-ED09C849A5BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0B153417-0208-4E1A-9911-ED09C849A5BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0B153417-0208-4E1A-9911-ED09C849A5BD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{59C8A0CF-0448-4100-AA0E-619B3CBB0EBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{59C8A0CF-0448-4100-AA0E-619B3CBB0EBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59C8A0CF-0448-4100-AA0E-619B3CBB0EBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59C8A0CF-0448-4100-AA0E-619B3CBB0EBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F9F4779-DDE6-46B4-9DA0-C8A60EF45200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F9F4779-DDE6-46B4-9DA0-C8A60EF45200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F9F4779-DDE6-46B4-9DA0-C8A60EF45200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F9F4779-DDE6-46B4-9DA0-C8A60EF45200}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1152BD01-6FEB-4D0F-BB33-99FA3F1F19AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1152BD01-6FEB-4D0F-BB33-99FA3F1F19AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1152BD01-6FEB-4D0F-BB33-99FA3F1F19AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1152BD01-6FEB-4D0F-BB33-99FA3F1F19AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9DE2D94-286C-4B46-B67E-9A8E0320FCD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9DE2D94-286C-4B46-B67E-9A8E0320FCD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9DE2D94-286C-4B46-B67E-9A8E0320FCD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9DE2D94-286C-4B46-B67E-9A8E0320FCD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26B34DDE-C3B6-4253-8CDB-19292930C035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26B34DDE-C3B6-4253-8CDB-19292930C035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26B34DDE-C3B6-4253-8CDB-19292930C035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26B34DDE-C3B6-4253-8CDB-19292930C035}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

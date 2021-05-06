@@ -12,6 +12,9 @@ using Pathea.ModuleNs;
 using Pathea.ActorNs;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Collections;
+using System.Linq;
+
 
 namespace KetwarooPortiaMod
 {
@@ -21,68 +24,205 @@ namespace KetwarooPortiaMod
         public static bool enabled;
         public static UnityModManager.ModEntry mod;
         public static Settings modSettings;
-        public static Vector3 resetVector = new Vector3(1.0F, 1.0F, 1.0F);
-        public static Vector3 headScaleVector;
-        public static Vector3 actorScaleVector;
-        public static Vector3 playerScaleVector;
 
         static bool Load(UnityModManager.ModEntry modEntry)
         {
 
             modSettings = UnityModManager.ModSettings.Load<Settings>(modEntry);
 
-            // save some cpu cycles
-            headScaleVector = new Vector3(modSettings.ActorHeadScale, modSettings.ActorHeadScale, modSettings.ActorHeadScale);
-            actorScaleVector = new Vector3(modSettings.ActorScaleMultiplier, modSettings.ActorScaleMultiplier, modSettings.ActorScaleMultiplier);
-            playerScaleVector = new Vector3(modSettings.PlayerScaleMultiplier, modSettings.PlayerScaleMultiplier, modSettings.PlayerScaleMultiplier);
-
             mod = modEntry;
+            UpdateStuff();
             modEntry.OnToggle = OnToggle;
             modEntry.OnGUI = OnGUI;
             modEntry.OnSaveGUI = OnSaveGUI;
+            modEntry.OnUpdate = OnUpdate;
+            // modEntry.OnUnload = OnUnload;
 
             var harmony = new Harmony(modEntry.Info.Id);
+
+            //UnityEngine.Debug.logger.logEnabled =false;
+            Debug.unityLogger.logEnabled = true;
+
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             return true;
         }
 
+        static void UpdateStuff()
+        {
+        }
+
+        static void OnUpdate(UnityModManager.ModEntry modEntry, float dt)
+        {
+            if (Input.GetKeyDown(Main.modSettings.DebugKey.keyCode))
+            {
+                UpdateStuff();
+                dmp("Pathea.Player.Self.actor.IsGround", Pathea.Player.Self.actor.IsGround());
+
+                //Terrain[] ts = UnityEngine.GameObject.FindObjectsOfType<Terrain>();
+
+                //foreach (Terrain t in ts)
+                //{
+
+                //    dump("Terrain: " + t.name);
+                //    TerrainCollider r = t.GetComponent<TerrainCollider>();
+
+                //    if (r != null)
+                //    {
+
+                //        Main.dump(r.enabled);
+                //        Main.dump(r.contactOffset);
+
+                //        r.enabled = true;
+                //        r.contactOffset = 1.0f;
+                //        if (null != r.material)
+                //        {
+                //            Main.dump(r.material.ToString());
+                //            Main.dump(r.material.dynamicFriction);
+                //            r.material.bounciness = 0.5F;
+                //        }
+
+                //        if (null != r.attachedRigidbody)
+                //        {
+                //            Main.dump(r.attachedRigidbody.ToString());
+                //            Main.dump(r.attachedRigidbody.collisionDetectionMode.ToString());
+                //        }
+                //    }
+
+
+
+
+                //}
+                ////                Terrain mainTerrain =null;
+
+                //Terrain waterTerrain = null;
+                ////                global::UnityEngine.GameObject gameObject = global::UnityEngine.GameObject.Find("Root/Terrain/Land");
+                ////                if (gameObject != null)
+                ////                {
+                ////                    mainTerrain = gameObject.GetComponent<global::UnityEngine.Terrain>();
+                ////                }
+                //global::UnityEngine.GameObject gameObject2 = global::UnityEngine.GameObject.Find("Root/Terrain/SeaPlane_Splite");
+                //if (gameObject2 != null)
+                //{
+                //    dump("Water terrain: " + gameObject2.name);
+                //    waterTerrain = gameObject2.GetComponent<Terrain>();
+                //    MeshCollider col = waterTerrain.gameObject.AddComponent<MeshCollider>();
+                //    MeshCollider col2 = gameObject2.AddComponent<MeshCollider>();
+                //    col.enabled = true;
+                //    col2.enabled = true;
+                //}
+
+                ////                if (mainTerrain != null && waterTerrain != null && terrainRigidBody!=null) {
+
+                ////                    Main.dump("have terrains");
+                ////                    waterTerrain.coll
+                ////Rigidbody waterRigidBody = waterTerrain.gameObject.AddComponent<Rigidbody>(); // Add the rigidbody.
+
+                ////                    waterRigidBody.mass = 5; // Set the GO's mass to 5 via the Rigidbody.
+                ////                }
+
+
+
+            }
+        }
 
         static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
         {
             enabled = value;
-
             return true;
         }
 
         static void OnGUI(UnityModManager.ModEntry modEntry)
         {
             modSettings.Draw(modEntry);
+            UpdateStuff();
         }
 
         static void OnSaveGUI(UnityModManager.ModEntry modEntry)
         {
+            // fix values first.
+            UpdateStuff();
             modSettings.Save(modEntry);
+
+        }
+
+        static void OnUnload(UnityModManager.ModEntry modEntry)
+        {
+            // fix values first.
+            UpdateStuff();
+            modSettings.Save(modEntry);
+
+        }
+
+
+        public static void inGameNotify(string message) {
+
+            Singleton<Pathea.TipsNs.TipsMgr>.Instance.SendSimpleTip(message);
+        }
+
+        public static void dmp(string key, object obj)
+        {
+            dump(string.Format("  {0} : {1}", key, obj));
+        }
+        public static void dump(object obj)
+        {
+            if (null != obj)
+            { mod.Logger.Log(string.Format("{0}", obj.ToString())); }
+            else
+            { mod.Logger.Log("is null"); }
+
+        }
+
+        public static void dumpComponents(GameObject o)
+        {
+            if (o == null) { return; }
+            Component[] components = o.GetComponents(typeof(Component));
+            for (int i = 0; i < components.Length; i++)
+            {
+                dump(string.Format("component {1} {2}", components[i].name, components[i].ToString()));
+            }
+        }
+
+        public static void dumpBoneNames(Transform parent, int level = 0)
+        {
+            if (parent == null)
+            {
+                return;
+            }
+            dump(string.Format("{0}: {1}", level, parent.name));
+            IEnumerator enumerator = parent.GetEnumerator();
+            try
+            {
+                while (enumerator.MoveNext())
+                {
+                    object obj = enumerator.Current;
+                    Transform transform = (Transform)obj;
+
+                    dump(string.Format("{0}: {1}", level, transform.name));
+
+                    dumpBoneNames(transform, level + 1);
+                }
+            }
+            catch (Exception e)
+            {
+                mod.Logger.LogException(e);
+            }
+
         }
 
     }
 
+
+
     public class Settings : UnityModManager.ModSettings, IDrawable
     {
-        [Header("Global")]
-        [Draw("Head Size")] public float ActorHeadScale = 1.0F;
-        [Draw("Actor Scale(best left alone)")] public float ActorScaleMultiplier = 1.0F;
 
         [Header("Player Modification")]
 
-        [Draw("Player Scale Multiplier")] public float PlayerScaleMultiplier = 1.0F;
-
-        [Draw("Player Stats Multiplier Hp/Sp/Atk/Def/etc..")] public float PlayerStatsMultiplier = 1.0F;
-        [Draw("Player Defence Boost (additive)")] public float PlayerDefenceBoost = 100.0F;
+        [Draw("Player Stats Multiplier Hp/Sp/Atk/Def/etc..", Precision = 2, Min = 0.1F)] public float PlayerStatsMultiplier = 1.0F;
+        [Draw("Player Defence Boost", Min = 0)] public float PlayerDefenceBoost = 100.0F;
         [Draw("Player Critical Chance Multiplier")] public float PlayerCriticalChanceMultiplier = 1.0F;
         [Draw("Player Critical Amount Multiplier")] public float PlayerCriticalAmountMultiplier = 1.0F;
-        [Draw("Run Speed Multiplier")] public float RunMultiplier = 1.0F;
-
 
         [Draw("Vampire Attack (Health on Hit)")] public float HealthLeech = 10.0F;
         [Draw("Vampire Attack (Stamina on Hit)")] public float StaminaLeech = 10.0F;
@@ -90,18 +230,8 @@ namespace KetwarooPortiaMod
         [Draw("Regen Health")] public float HealthPerSecond = 1.0F;
         [Draw("Regen Stamina")] public float StaminaPerSecond = 1.0F;
 
-
-        [Header("Ruin Diving")]
-
-        [Draw("Dig Intensity Multiplier (How much resources per hit)")] public float DigIntensity = 1.0F;
-        [Draw("Dig Radius Multiplier (Size of hole)")] public float DigRadius = 1.0F;
-        [Draw("Longer Jetpack")] public bool ExtendJetpack = false;
-        [Draw("Treasure Detection Range")] public float DigTreasureDetectRange = 50F;
-        [Draw("Treasure Lock-On Time(seconds)")] public float DigTreasureLockOnTime = 0.5F;
-        [Draw("Treasure Lock-On Count")] public int DigTreasureLockOnCount = 1024;
-        [Draw("Show Object Outline")] public bool DigShowTargetOutline = false;
-        [Draw("Show Object Name")] public bool DigShowTargetName = false;
-        [Draw("Long Distance Loot")] public bool DigLongDistanceLoot = false;
+        [Header("Equipment")]
+        [Draw("Drill/Chainsaw Drift Speed (AutoMove to toggle).")] public float DrillDriftSpeed = 1.5F;
 
         [Header("Missions")]
 
@@ -113,24 +243,28 @@ namespace KetwarooPortiaMod
         [Draw("Crafting Cost Multiplier (floors at 1 material cost.)")] public float CostCrafting = 1.0F;
         [Draw("Crafting Time Multiplier")] public float TimeCraftingMultiplier = 1.0F;
 
+        [Draw("Factory Performance/Transport Level Cap")] public int FactoryPerformanceLevelCap = 999;
+        [Draw("Factory Performance/Transport Gain Per Level")] public float FactoryPerformanceLevelGain = 0.05F;
+
+        [Draw("Connect Factory Resources For Crafting")] public bool FactoryConnectCraftingResources = true;
 
         [Header("Planter/Farming")]
+        [Draw("Farm Animal Max Growth Multiplier (default ~1.2)", Min = 1,Precision =2)] public float FarmAnimalMaxGrowth = 1.2F;
         [Draw("Planter Harvest Amount Multiplier")] public float PlanterHarvestAmountMultiplier = 1.0F;
         [Draw("Planter Growth Speed Multiplier")] public float PlanterGrowthSpeedMultiplier = 1.0F;
-        [Draw("Happy Plant Bonus Multiplier ")] public float PlanterHappySeedMultiplier = 1.0F;
-
+        [Draw("Happy Plant Bonus Multiplier (fertilizer required multiplier)")] public float PlanterHappySeedMultiplier = 1.0F;
         [Draw("Days To Regrow Tree")] public int TreeRegrowDays = Pathea.ConfigNs.OtherConfig.Self.TreeFreshDate;
 
-        [Header("Misc/Useless/NotWorking")]
+        [Header("Relationships")]
+        [Draw("Date mood bonus per kill in Ghost Cave event.")] public int GhostGameMoodBonusPerKill = 0;
 
-        [Draw("Blood Effect Percent")]
-        public float BloodEffectPercent = Pathea.ConfigNs.OtherConfig.Self.BloodEffect_Percent;
 
-        [Draw("Jump Time Scale")]
-        public float JumpTimeScale = Pathea.ConfigNs.OtherConfig.Self.JumpTimeScale;
+        [Header("Misc/Useless/Not Working")]
+        [Draw("Ignore Water")] public bool IgnoreWater = false;
+        [Draw("Blood Effect Percent")] public float BloodEffectPercent = Pathea.ConfigNs.OtherConfig.Self.BloodEffect_Percent;
+        [Draw("Player Mission Max Count")] public int PlayerMissionMaxCount = Pathea.ConfigNs.OtherConfig.Self.PlayerMissionMaxCount;
 
-        [Draw("Player Mission Max Count")]
-        public int PlayerMissionMaxCount = Pathea.ConfigNs.OtherConfig.Self.PlayerMissionMaxCount;
+        [Draw("Debug Key, to trigger random things.")] public UnityModManagerNet.KeyBinding DebugKey = new UnityModManagerNet.KeyBinding { keyCode = KeyCode.V };
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
@@ -139,76 +273,36 @@ namespace KetwarooPortiaMod
 
         public void OnChange()
         {
-            Main.headScaleVector = new Vector3(ActorHeadScale, ActorHeadScale, ActorHeadScale);
-            Main.actorScaleVector = new Vector3(ActorScaleMultiplier, ActorScaleMultiplier, ActorScaleMultiplier);
-            Main.playerScaleVector = new Vector3(ActorScaleMultiplier, ActorScaleMultiplier, ActorScaleMultiplier);
+            FarmAnimalMaxGrowth = Mathf.Clamp(FarmAnimalMaxGrowth,1.0F, 99F);
         }
     }
-
 
     [HarmonyPatch(typeof(Pathea.Player))]
     static class Pathea_Player_Patches
     {
 
-        [HarmonyPostfix]
-        [HarmonyPatch("DigRadius", MethodType.Getter)]
-        static void PostfixDigRadius(ref float __result)
-        {
-            if (!Main.enabled)
-                return;
-
-            try
-            {
-                __result *= Main.modSettings.DigRadius;
-            }
-            catch (Exception e)
-            {
-                Main.mod.Logger.Error(e.ToString());
-            }
-        }
-        [HarmonyPostfix]
-        [HarmonyPatch("DigIntensity", MethodType.Getter)]
-        static void PostfixDigIntensity(ref float __result)
-        {
-            if (!Main.enabled)
-                return;
-
-            try
-            {
-                __result *= Main.modSettings.DigIntensity;
-            }
-            catch (Exception e)
-            {
-                Main.mod.Logger.Error(e.ToString());
-            }
-        }
-
-        //[HarmonyPostfix]
-        //[HarmonyPatch("TriggerAction")]
-        //static void PostfixTriggerAction(ActionType type, ActionTriggerMode mode, ref bool __result, Pathea.Player __instance, Intend ___intend)
-        //{
-        //}
-
-        static float[] originalPlayerMotionValues = new float[3];
-
-        [HarmonyPostfix]
-        [HarmonyPatch("InitNew")]
-        static void PostfixInitNew(Pathea.Player __instance, Actor ___playingActor)
+        // when moving to safe position
+        [HarmonyPrefix]
+        [HarmonyPatch("BeginCorrect")]
+        static bool PrefixBeginCorrect(Player __instance, Actor ___playingActor, UnityEngine.Vector3 pos)
         {
 
-            if (___playingActor == null)
-                return;
+            // prevent position correction if in water. or in weird places.
+            if (
+                Main.modSettings.IgnoreWater
+                // as long as alive
+                && ___playingActor.hp > 0
+                // and not in a bottomless pit
+                //&& ___playingActor.IsGround()
+                )
+            {
+                return false;
+            }
 
-            // meh
-            if (originalPlayerMotionValues[0] == 0.0F) { originalPlayerMotionValues[0] = __instance.actor.motor.maxSpeed; }
-            if (originalPlayerMotionValues[1] == 0.0F) { originalPlayerMotionValues[1] = __instance.actor.RunSpeed; }
-            if (originalPlayerMotionValues[2] == 0.0F) { originalPlayerMotionValues[2] = __instance.actor.FastRunSpeed; }
-
-            __instance.actor.motor.maxSpeed = originalPlayerMotionValues[0] * Main.modSettings.RunMultiplier;
-            __instance.actor.RunSpeed = originalPlayerMotionValues[1] * Main.modSettings.RunMultiplier;
-            __instance.actor.FastRunSpeed = originalPlayerMotionValues[2] * Main.modSettings.RunMultiplier;
-
+            return true;
         }
+
+
 
 
         //  whenever player updates
@@ -219,7 +313,10 @@ namespace KetwarooPortiaMod
             if (___playingActor == null)
                 return;
 
-            if (Time.fixedTime - Main.timeTick >= 1.0F)
+
+            if (Time.fixedTime - Main.timeTick >= 1.0F
+                // and not dead.
+                && ___playingActor.hp > 0)
             {
                 Main.timeTick = Time.fixedTime;
 
@@ -227,13 +324,24 @@ namespace KetwarooPortiaMod
                 __instance.ChangeHp(Main.modSettings.HealthPerSecond);
                 __instance.ChangeStamina(Main.modSettings.StaminaPerSecond);
             }
-        }
 
+            if (
+                Main.modSettings.DrillDriftSpeed > 0.0F
+                && __instance.IsAutoMove()
+                && (
+                  __instance.IsActionRunning(ACType.Chainsaw)
+                   || __instance.IsActionRunning(ACType.Drilling)
+                  )
+                )
+            {
+                Vector3 direction = Main.modSettings.DrillDriftSpeed * Pathea.CameraSystemNs.CameraManager.Instance.SourceCamera.transform.forward;
+                ___playingActor.motor.MoveBySpeed(direction);
+            }
+
+        }
     }
 
-
     // Pathea.NotebookSystem.BlueprintResearchManager.Self.CurSpeed
-
     [HarmonyPatch(typeof(Pathea.NotebookSystem.BlueprintResearchManager))]
     static class Pathea_NotebookSystem_BlueprintResearchManager_Patches
     {
@@ -256,15 +364,18 @@ namespace KetwarooPortiaMod
 
     }
 
-
     // Pathea.ActorNs.Actor
     [HarmonyPatch(typeof(Pathea.ActorNs.Actor))]
     static class Pathea_ActorNs_Actor_Patches
     {
+
         [HarmonyPrefix]
         [HarmonyPatch("HpChangeEventTrigger")]
         static void PrefixHpChangeEventTrigger(Pathea.SkillNs.Caster caster, float hpChangeOrigin, float hpChanged, bool critical, Pathea.ActorNs.Actor __instance)
         {
+            if (!Main.enabled)
+                return;
+
             // if player did it.
             if (System.Object.ReferenceEquals(caster.Castable, Player.Self.actor))
             {
@@ -277,6 +388,9 @@ namespace KetwarooPortiaMod
         [HarmonyPatch("ConstAttrAttack", MethodType.Getter)]
         static void PostfixConstAttrAttack(ref float __result, Pathea.ActorNs.Actor __instance)
         {
+            if (!Main.enabled)
+                return;
+
             if (!__instance.IsActorType(ActorTag.Player)) { return; }
             __result *= Main.modSettings.PlayerStatsMultiplier;
         }
@@ -285,6 +399,9 @@ namespace KetwarooPortiaMod
         [HarmonyPatch("ConstAttrCpMax", MethodType.Getter)]
         static void PostfixConstAttrCpMax(ref float __result, Pathea.ActorNs.Actor __instance)
         {
+            if (!Main.enabled)
+                return;
+
             if (!__instance.IsActorType(ActorTag.Player)) { return; }
             __result *= Main.modSettings.PlayerStatsMultiplier;
         }
@@ -293,6 +410,7 @@ namespace KetwarooPortiaMod
         [HarmonyPatch("ConstAttrCritical", MethodType.Getter)]
         static void PostfixConstAttrCritical(ref float __result, Pathea.ActorNs.Actor __instance)
         {
+
             if (!__instance.IsActorType(ActorTag.Player)) { return; }
             __result *= Main.modSettings.PlayerCriticalChanceMultiplier;
         }
@@ -318,7 +436,7 @@ namespace KetwarooPortiaMod
         static void PostfixConstAttrMeleeCriticalAmount(ref float __result, Pathea.ActorNs.Actor __instance)
         {
             if (!__instance.IsActorType(ActorTag.Player)) { return; }
-            __result *= Main.modSettings.PlayerStatsMultiplier;
+            __result *= Main.modSettings.PlayerCriticalAmountMultiplier;
         }
 
         [HarmonyPostfix]
@@ -326,7 +444,7 @@ namespace KetwarooPortiaMod
         static void PostfixConstAttrRangeCriticalAmount(ref float __result, Pathea.ActorNs.Actor __instance)
         {
             if (!__instance.IsActorType(ActorTag.Player)) { return; }
-            __result *= Main.modSettings.PlayerStatsMultiplier;
+            __result *= Main.modSettings.PlayerCriticalAmountMultiplier;
         }
 
         [HarmonyPostfix]
@@ -337,22 +455,35 @@ namespace KetwarooPortiaMod
             __result *= Main.modSettings.PlayerStatsMultiplier;
         }
 
-
-
-        [HarmonyPrefix]
-        [HarmonyPatch("ApplySubModel")]
-        static void PrefixApplySubModel(int slot, string subModelInfo, ref Pathea.ActorNs.Actor __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch("OnDeath")]
+        static void PostfixOnDeath(ref Pathea.ActorNs.Actor __instance)
         {
-            // just assume something's changed.
-            // reset scaling so it gets picked up by update
-            if (null != __instance.GetHead())
+
+            if (
+                0 != Main.modSettings.GhostGameMoodBonusPerKill
+                && __instance.FactionId == GhostCaveCenter.ghostFactionId
+                && GhostCaveCenter.Instance.Game != null
+                && Pathea.EG.EGMgr.Self.IsEngagementEvent()
+                )
             {
-                __instance.GetHead().localScale = Main.resetVector;
+                Main.mod.Logger.Log("Killed ghost on playdate");
+                Pathea.EG.EGMgr.Self.AddMood(Main.modSettings.GhostGameMoodBonusPerKill);
+                //GhostCaveCenter.Instance.Game.ChangeMood(Main.modSettings.GhostGameMoodBonusPerKill);
             }
 
-            if (null != __instance.modelRoot)
+        }
+        //IgnoreCollision
+
+        [HarmonyPrefix]
+        [HarmonyPatch("IgnoreCollision")]
+        [HarmonyPatch(new Type[] { typeof(UnityEngine.Collider), typeof(bool) })]
+        static void PrefixIgnoreCollision(ref Pathea.ActorNs.Actor __instance, ref UnityEngine.Collider coll, ref bool ignore)
+        {
+            if (__instance.IsActorType(ActorTag.Player) && null != coll)
             {
-                __instance.modelRoot.transform.localScale = Main.resetVector;
+                Main.dump(coll.name);
+                Main.dump(ignore);
             }
         }
 
@@ -360,151 +491,122 @@ namespace KetwarooPortiaMod
         [HarmonyPatch("Update")]
         static void PostfixUpdate(ref Pathea.ActorNs.Actor __instance)
         {
-            // todo OnUpdate might be too often.
-            rescaleActor(__instance);
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch("UpdateSubModel")]
-        static void PostUpdateSubModel(ref Pathea.ActorNs.Actor __instance)
-        {
-            rescaleActor(__instance);
-        }
-
-        // rescale an actor if possible
-        static void rescaleActor(Pathea.ActorNs.Actor __instance)
-        {
-
-            if (__instance == null)
-            {
-                return;
-            }
+            
+            //if (__instance.IsActorType(ActorTag.Player)/* && Input.GetKeyDown(Main.modSettings.DebugKey.keyCode)*/)
+            //{
 
 
-            if (
-            __instance.IsActorType(ActorTag.Npc) || __instance.IsActorType(ActorTag.Player)
-            // todo, add exclusion for papa bear. maybe the mayor too.
-           )
-            {
-                Transform head = __instance.GetHead();
-                if (null != head)
-                {
-                    head.localScale = Main.headScaleVector;
-                }
-            }
+            //    // Main.dump("actor collider");
+            //    Ray ray = default;
+            //    RaycastHit[] hits = new RaycastHit[2];
 
-            if (null != __instance.modelRoot)
-            {
-                if (__instance.IsActorType(ActorTag.Player))
-                {
-                    __instance.modelRoot.transform.localScale = Main.playerScaleVector;
-                }
-                else if (__instance.IsActorType(ActorTag.Npc))
-                {
-                    __instance.modelRoot.transform.localScale = Main.actorScaleVector;
-                }
-            }
-        }
-    }
+            //    ray.origin = __instance.gamePos;
+            //    ray.direction = Vector3.down;
 
 
-    // Pathea.EquipmentNs.JetPack
-    [HarmonyPatch(typeof(Pathea.EquipmentNs.JetPack))]
-    static class Pathea_EquipmentNs_JetPack_Patches
-    {
-        [HarmonyPostfix]
-        [HarmonyPatch("OnEnable")]
-        public static void PostfixEnableJetpack(ref float ___durationValue)
-        {
-            if (Main.modSettings.ExtendJetpack)
-            {
-                ___durationValue = float.MaxValue;
-            }
+            //    int num = global::UnityEngine.Physics.RaycastNonAlloc(ray, hits, __instance.GetActorHeight(), 16);
+            //    for (int i = 0; i < num; i++)
+            //    {
+            //        RaycastHit raycastHit = hits[i];
+            //        //Main.dump(raycastHit.ToString());
+            //        //Main.dmp("raycastHit.distance", raycastHit.distance);
+            //        //Main.dmp("raycastHit.collider.gameObject.layer", raycastHit.collider.gameObject.layer);
+            //        //Main.dmp("raycastHit.collider.gameObject.name" , raycastHit.collider.gameObject.name);
+            //        //Main.dump(raycastHit.collider.ToString());
+
+            //        if ("SeaPlane_Splite" == raycastHit.collider.gameObject.name)
+            //        {
+
+            //            Vector3 pos = __instance.gamePos;
+            //            pos.y = ray.origin.y - raycastHit.distance;
+            //            __instance.gamePos = pos;
+            //        }
+
+            //    }
+
+            //    //RaycastHit hit2 = new RaycastHit();
+            //    //__instance.GetCollider().Raycast(ray, out hit2, 10f);
+            //    //if (null != hit2.collider)
+            //    //{
+            //    //    Main.dmp("hit2.distance ", hit2.distance);
+            //    //    Main.dmp("hit2.collider.gameObject.name", hit2.collider.gameObject.name);
+            //    //}
+            //    //Main.dump("actor collider end");
+            //}
+            
         }
     }
 
-    // Pathea.CompoundSystem.CompoundManager
+    //Pathea.CompoundSystem.CompoundItem
     [HarmonyPatch(typeof(Pathea.CompoundSystem.CompoundItem))]
     static class Pathea_CompoundSystem_CompoundItem_Patches
     {
+
+
         [HarmonyPostfix]
         [HarmonyPatch("CompoundTime", MethodType.Getter)]
         public static void PostfixCompoutTime(ref float __result)
         {
             __result *= Main.modSettings.TimeCraftingMultiplier;
         }
-    }
-
-    //AutomataMachineMenuCtr
-    // for crafting stuff
-    [HarmonyPatch(typeof(AutomataMachineMenuCtr))]
-    static class AutomataMachineMenuCtr_Patches
-    {
-        static Dictionary<int, int[]> originalValues = new Dictionary<int, int[]>();
 
         [HarmonyPostfix]
-        [HarmonyPatch("ChangePage")]
-        public static void PostfixReduceRequireItemCost(List<Pathea.CompoundSystem.CompoundItem> ___itemList)
+        [HarmonyPatch("RequireItem1", MethodType.Getter)]
+        public static void PostfixRequireItem1(ref Pathea.ItemSystem.ItemObject __result, Pathea.CompoundSystem.CompoundItem __instance)
+        {
+            RecalcItemObject(ref __result, 0, ref __instance);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("RequireItem2", MethodType.Getter)]
+        public static void PostfixRequireItem2(ref Pathea.ItemSystem.ItemObject __result, Pathea.CompoundSystem.CompoundItem __instance)
+        {
+            RecalcItemObject(ref __result, 1, ref __instance);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch("RequireItem3", MethodType.Getter)]
+        public static void PostfixRequireItem3(ref Pathea.ItemSystem.ItemObject __result, Pathea.CompoundSystem.CompoundItem __instance)
+        {
+            RecalcItemObject(ref __result, 2, ref __instance);
+        }
+
+        static Dictionary<int, int[]> originalValues = new Dictionary<int, int[]>();
+        public static void RecalcItemObject(ref Pathea.ItemSystem.ItemObject __result, int pos, ref Pathea.CompoundSystem.CompoundItem __instance)
         {
 
-            if (null == ___itemList)
-                return;
-
-            for (int i = 0; i < ___itemList.Count; i++)
+            if (__result == null || __instance == null)
             {
-                try
-                {
-                    Pathea.CompoundSystem.CompoundItem item = ___itemList[i];
-
-
-                    // keep track of original.
-                    if (!originalValues.ContainsKey(item.Id))
-                    {
-                        int[] arr = new int[] {
-                            (null==item.RequireItem1)?0:item.RequireItem1.Number,
-                            (null==item.RequireItem2)?0:item.RequireItem2.Number,
-                            (null==item.RequireItem3)?0:item.RequireItem3.Number
-
-                        };
-                        //Main.mod.Logger.Log(string.Format("Initial value for {0} : {1}", item.Id, arr.ToString()));
-                        originalValues.Add(item.Id, arr);
-                    }
-
-                    int newnum1 = ChangeCraftingMaterialNumber(originalValues[item.Id][0]);
-                    int newnum2 = ChangeCraftingMaterialNumber(originalValues[item.Id][1]);
-                    int newnum3 = ChangeCraftingMaterialNumber(originalValues[item.Id][2]);
-
-                    if (newnum1 > 0)
-                    {
-                        item.RequireItem1.DeleteNumber(item.RequireItem1.Number);
-                        item.RequireItem1.ChangeNumber(newnum1);
-
-                    }
-                    if (newnum2 > 0)
-                    {
-                        item.RequireItem2.DeleteNumber(item.RequireItem2.Number);
-                        item.RequireItem2.ChangeNumber(newnum2);
-
-                    }
-                    if (newnum3 > 0)
-                    {
-                        item.RequireItem3.DeleteNumber(item.RequireItem3.Number);
-                        item.RequireItem3.ChangeNumber(newnum3);
-
-                    }
-                    // Main.mod.Logger.Log(string.Format("value for {0} : {1} {2} {3}", item.Id, newnum1, newnum2,newnum3));
-                }
-                catch (Exception e)
-                {
-                    Main.mod.Logger.Error(e.ToString());
-                    Main.mod.Logger.Error(e.Source);
-                    Main.mod.Logger.Error(e.StackTrace);
-
-                }
-
+                return;
             }
 
+            // all this to avoid circular references.
+            if (!originalValues.ContainsKey(__instance.Id))
+            {
+                int[] arr = new int[3];
+                arr[0] = -1;
+                arr[1] = -1;
+                arr[2] = -1;
+                originalValues.Add(__instance.Id, arr);
+            }
+
+            if (originalValues[__instance.Id][pos] == -1)
+            {
+                originalValues[__instance.Id][pos] = __result.Number;
+            }
+
+            int newnum = ChangeCraftingMaterialNumber(originalValues[__instance.Id][pos]);
+
+            // redo 
+            if (
+                __result.Number != newnum
+             )
+            {
+                __result.DeleteNumber(__result.Number);
+                __result.ChangeNumber(newnum);
+            }
         }
+
 
         // recalc item cost.
         public static int ChangeCraftingMaterialNumber(int matCount)
@@ -517,6 +619,280 @@ namespace KetwarooPortiaMod
 
             return matCount;
         }
+
+    }
+
+    // to prevent circular references.
+    static class FactoryMatInfo
+    {
+        public static Dictionary<int, Pathea.HomeNs.IItemContainer> FactoryItemContainers = new Dictionary<int, Pathea.HomeNs.IItemContainer>();
+
+        public static void InitItemContainer(int factoryId)
+        {
+
+            if (FactoryItemContainers.ContainsKey(factoryId))
+            {
+                return;
+            }
+
+            Pathea.HomeNs.IItemContainer itemContainer = new FactorySharedContainer(factoryId);
+            Pathea.HomeNs.HomeModule.Self.AddItemContainer(itemContainer);
+
+            FactoryItemContainers.Add(factoryId, itemContainer);
+        }
+
+        public static int GetMatCount(Pathea.FarmFactoryNs.FarmFactory __instance, int ietmId)
+        {
+            if (__instance == null || __instance.MatList == null)
+            {
+                return 0;
+            }
+
+            foreach (IdCount idCount in __instance.MatList)
+            {
+                if (ietmId == idCount.id)
+                {
+                    return idCount.count;
+                }
+            }
+
+            return 0;
+        }
+
+        public static void RemoveMat(Pathea.FarmFactoryNs.FarmFactory __instance, int id, int count)
+        {
+            __instance.MatList.Remove(id, count);
+        }
+    }
+
+    //Pathea.FarmFactoryNs.FarmFactoryMgr.Self.GetFactory();
+    [HarmonyPatch(typeof(Pathea.FarmFactoryNs.FarmFactoryMgr))]
+    static class Pathea_FarmFactoryNs_FarmFactoryMgr_Patch
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch("GetFactory")]
+        static void PostfixGetFactory(Pathea.FarmFactoryNs.FarmFactory __result, int id)
+        {
+            if (__result != null)
+            {
+                FactoryMatInfo.InitItemContainer(id);
+            }
+        }
+    }
+
+    //Pathea.FarmFactoryNs.FarmFactory
+    [HarmonyPatch(typeof(Pathea.FarmFactoryNs.FarmFactory))]
+    static class Pathea_FarmFactoryNs_FarmFactory_Patch
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch("GetMatCount")]
+        static bool PrefixGetMatCount(ref int __result, int ietmId, Pathea.FarmFactoryNs.FarmFactory __instance)
+        {
+
+            if (!Main.modSettings.FactoryConnectCraftingResources)
+            {
+                return true;
+            }
+            int count = Pathea.ItemSystem.ItemPackage.GetItemCount(ietmId, true);
+            __result = count;
+
+            return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("RemoveMat")]
+        [HarmonyPatch(new Type[] { typeof(int), typeof(int) })]
+        static bool PrefixRemoveMat(int id, ref int count, Pathea.FarmFactoryNs.FarmFactory __instance)
+        {
+
+            if (!Main.modSettings.FactoryConnectCraftingResources)
+            {
+                return true;
+            }
+
+            Pathea.ItemSystem.ItemPackage.RemoveItem(id, count, true, true);
+
+            return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("RemoveMat")]
+        [HarmonyPatch(new Type[] { typeof(List<IdCount>) })]
+        static bool PrefixRemoveMatByList(List<IdCount> list, ref List<IdCount> __result, Pathea.FarmFactoryNs.FarmFactory __instance)
+        {
+            if (!Main.modSettings.FactoryConnectCraftingResources)
+            {
+                return true;
+            }
+
+            foreach (IdCount idCount in list)
+            {
+                int id = idCount.id;
+                int count = idCount.count;
+                int currentCount = Pathea.ItemSystem.ItemPackage.GetItemCount(id, true);
+
+                if (currentCount > 0)
+                {
+                    Pathea.ItemSystem.ItemPackage.RemoveItem(id, count, true, true);
+                    int num = Mathf.Min(currentCount, count);
+                    idCount.count = Mathf.Max(0, idCount.count - num);
+                }
+            }
+
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                if (list[i].count <= 0)
+                {
+                    list.RemoveAt(i);
+                }
+            }
+            __result = list;
+
+            return false;
+        }
+    }
+
+    class FactorySharedContainer : Pathea.HomeNs.IItemContainer
+    {
+
+        public Pathea.FarmFactoryNs.FarmFactory factory;
+        public int factoryId;
+        public FactorySharedContainer(int factoryId)
+        {
+            this.factoryId = factoryId;
+        }
+
+        public int Delete(int itemId, int count)
+        {
+            getFactory();
+            if (factory != null)
+            {
+                int matcount = FactoryMatInfo.GetMatCount(factory, itemId);
+
+                if (matcount == 0)
+                {
+                    return 0;
+                }
+
+                int toremove = (matcount >= count) ? count : (count - matcount);
+
+                FactoryMatInfo.RemoveMat(factory, itemId, count);
+
+                return (count - toremove);
+
+            }
+            return 0;
+        }
+
+        public int GetCount(int itemId)
+        {
+            getFactory();
+
+            if (factory != null)
+            {
+                int count = FactoryMatInfo.GetMatCount(factory, itemId);
+                return count;
+            }
+            return 0;
+        }
+
+        public Pathea.FarmFactoryNs.FarmFactory getFactory()
+        {
+
+            if (factory == null)
+            {
+                factory = Pathea.FarmFactoryNs.FarmFactoryMgr.Self.GetFactory(factoryId);
+            }
+            return factory;
+        }
+    }
+
+    //Pathea.FarmFactoryNs.FarmFactory
+    [HarmonyPatch(typeof(Pathea.FarmFactoryNs.FarmFactory))]
+    static class Pathea_FarmFactoryNs_FarmFactory_Patches
+    {
+
+        [HarmonyPrefix]
+        [HarmonyPatch("GetPerformanceData")]
+        static void PrefixGetPerformanceData(ref List<Pathea.FarmFactoryNs.Factory_PerformanceLevelData> ___performanceDataList, ref Pathea.FarmFactoryNs.FarmFactory __instance)
+        {
+
+            if (null == ___performanceDataList)
+            {
+                List<Pathea.FarmFactoryNs.Factory_PerformanceLevelData> tmp = new List<Pathea.FarmFactoryNs.Factory_PerformanceLevelData>();
+
+
+                int maxLevel = Math.Max(Main.modSettings.FactoryPerformanceLevelCap, __instance.PerformanceLevel);
+
+                for (int i = 0; i < maxLevel; i++)
+                {
+
+                    Pathea.FarmFactoryNs.Factory_PerformanceLevelData p = new Pathea.FarmFactoryNs.Factory_PerformanceLevelData();
+
+                    Traverse.Create(p).Property("Level").SetValue(i);
+                    Traverse.Create(p).Property("Speed").SetValue(1.0F + (i * Main.modSettings.FactoryPerformanceLevelGain));
+                    // always cost 1 research note
+                    Traverse.Create(p).Property("CostStr").SetValue("2060003,1");
+                    //string[] arr = new string[] { "",""};
+                    //Traverse.Create(p).Property("PlugListStr").SetValue(arr);
+                    //Traverse.Create(p).Field("Cost").SetValue(IdCount.GetIdCountList("2060003,1", ';', ','));
+                    tmp.Add(p);
+                }
+
+                foreach (Pathea.FarmFactoryNs.Factory_PerformanceLevelData p in tmp)
+                {
+                    p.Init();
+                    //Main.mod.Logger.Log(string.Format("Level {0} {1}", p.Level, p.Cost.ToString()));
+                }
+
+                ___performanceDataList = tmp;
+
+            }
+
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch("GetTransportData")]
+        static void PrefixGetTransportData(ref List<Pathea.FarmFactoryNs.Factory_TransmissionLevel> ___transportDataList, ref Pathea.FarmFactoryNs.FarmFactory __instance)
+        {
+
+            if (null == ___transportDataList)
+            {
+                List<Pathea.FarmFactoryNs.Factory_TransmissionLevel> tmp = new List<Pathea.FarmFactoryNs.Factory_TransmissionLevel>();
+
+                int maxLevel = Math.Max(Main.modSettings.FactoryPerformanceLevelCap, __instance.TransportLV);
+
+                for (int i = 0; i < maxLevel; i++)
+                {
+
+                    Pathea.FarmFactoryNs.Factory_TransmissionLevel t = new Pathea.FarmFactoryNs.Factory_TransmissionLevel();
+
+                    Traverse.Create(t).Property("Level").SetValue(i);
+                    Traverse.Create(t).Property("Speed").SetValue(1.0F + (i * Main.modSettings.FactoryPerformanceLevelGain));
+                    // always cost 1 research note
+                    Traverse.Create(t).Property("CostStr").SetValue("2060003,1");
+                    tmp.Add(t);
+                }
+
+                foreach (Pathea.FarmFactoryNs.Factory_TransmissionLevel t in tmp)
+                {
+                    t.Init();
+                    // Main.mod.Logger.Log(string.Format("Level {0} {1}", t.Level, t.Cost.ToString()));
+                }
+
+                ___transportDataList = tmp;
+
+            }
+
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch("GetDashBoardSpeed")]
+        static void PostfixGetDashBoardSpeed(ref float __result, ref Pathea.FarmFactoryNs.FarmFactory __instance)
+        {
+            // should already be applied at compount item level.
+            //__result *= Main.modSettings.TimeCraftingMultiplier;
+        }
+
     }
 
     // Pathea.Missions.MissionRewards
@@ -553,13 +929,6 @@ namespace KetwarooPortiaMod
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch("JumpTimeScale", MethodType.Getter)]
-        static void PostfixJumpTimeScale(ref float __result)
-        {
-            __result = Main.modSettings.JumpTimeScale;
-        }
-
-        [HarmonyPostfix]
         [HarmonyPatch("PlayerMissionMaxCount", MethodType.Getter)]
         static void PostfixPlayerMissionMaxCount(ref int __result)
         {
@@ -568,9 +937,7 @@ namespace KetwarooPortiaMod
 
     }
 
-
     //Pathea.ItemSystem.ItemSeedCmpt
-
     [HarmonyPatch(typeof(Pathea.ItemSystem.ItemSeedCmpt))]
     class Pathea_ItemSystem_ItemSeedCmpt_Patches
     {
@@ -604,6 +971,7 @@ namespace KetwarooPortiaMod
         }
     }
 
+
     //Pathea.HomeNs.Plant
     [HarmonyPatch(typeof(Pathea.HomeNs.Plant))]
     class Pathea_HomeNs_Plant_Patches
@@ -631,127 +999,47 @@ namespace KetwarooPortiaMod
         }
     }
 
-    // Pathea.TreasureRevealerNs.TreasureRevealerManager
-    [HarmonyPatch(typeof(Pathea.TreasureRevealerNs.TreasureRevealerManager))]
-    class Pathea_TreasureRevealerNs_TreasureRevealerManager_Patches
+    //Pathea.HomeNs.AnimalFarmPlaceCtr
+    [HarmonyPatch(typeof(Pathea.HomeNs.AnimalFarmPlaceCtr))]
+    class Pathea_HomeNs_AnimalFarmPlaceCtr_Patches
     {
         [HarmonyPostfix]
-        [HarmonyPatch("property", MethodType.Getter)]
-        static void PostfixProperty(ref Pathea.TreasureRevealerNs.TreasureRevealerManager.TreasureRevealerProperty __result)
+        [HarmonyPatch("CreateAnimal")]
+        static void PostfixGCreateAnimal(ref Pathea.HomeNs.AnimalFarmPlaceCtr __instance, ref List<Pathea.HomeNs.FarmAnimalCtr> ___animCtrList, List<UnityEngine.Transform> ___animalTransList)
         {
-            __result.detectRange = Main.modSettings.DigTreasureDetectRange;
-            __result.showBorder = Main.modSettings.DigShowTargetOutline;
-            __result.showName = Main.modSettings.DigShowTargetName;
-            __result.maxAimCount = Main.modSettings.DigTreasureLockOnCount;
+ 
         }
-
     }
 
-    // Pathea.UISystemNs.TreasureRevealerUICtr
-    [HarmonyPatch(typeof(Pathea.UISystemNs.TreasureRevealerUICtr))]
-    class Pathea_UISystemNs_TreasureRevealerUICtr_Patches
+    //Pathea.HomeNs.FarmAnimalCtr
+    [HarmonyPatch(typeof(Pathea.HomeNs.FarmAnimalCtr))]
+    class Pathea_HomeNs_FarmAnimalCtr_Patches
     {
         [HarmonyPostfix]
-        [HarmonyPatch("OnAim")]
-        static void PostfixOnAim(ref List<Pathea.TreasureRevealerNs.TreasureRevealerItem> ___allTreasure, ref float ___lockTime)
+        [HarmonyPatch("SetDataInfo")]
+        static void PostfixTotalPoint(ref Pathea.HomeNs.FarmAnimalCtr __instance, Pathea.AnimalFarmNs.AnimalinFarm ___anm)
         {
-            ___lockTime = Main.modSettings.DigTreasureLockOnTime;
+            float rescale = 1.0F;
+            if (null!=___anm) {
+                rescale = ___anm.ProductionMul;
+            }
+            __instance.transform.localScale = Vector3.one*rescale;
+            __instance.gameObject.transform.localScale = Vector3.one * rescale;
         }
-        static List<Pathea.TreasureRevealerNs.TreasureRevealerItem> revealedTreasure = new List<Pathea.TreasureRevealerNs.TreasureRevealerItem>();
-
+    } 
+    
+    //Pathea.AnimalFarmNs.AnimalData
+    [HarmonyPatch(typeof(Pathea.AnimalFarmNs.AnimalData))]
+    class Pathea_AnimalFarmNs_AnimalData_Patches
+    {
         [HarmonyPostfix]
-        [HarmonyPatch("Update")]
-        static void PostfixUpdate(
-            ref Pathea.UISystemNs.TreasureRevealerUICtr __instance,
-            ref Pathea.TreasureRevealerNs.TreasureRevealerItem ___curLock
-        )
+        [HarmonyPatch("TotalPoint", MethodType.Getter)]
+        static void PostfixTotalPoint(ref Pathea.AnimalFarmNs.AnimalData __instance, ref int __result)
         {
-            try
-            {
-                // keeptrack of last fresh lock
-                // maybe transpiler later.
-                if (
-                    null != ___curLock
-                    && !revealedTreasure.Contains(___curLock)
-                    && null != ___curLock.transf.GetComponent<Pathea.ItemDropNs.ItemDrop>()
-                    )
-                {
-                    revealedTreasure.Add(___curLock);
-                }
-
-                if (Main.modSettings.DigLongDistanceLoot && Pathea.InputSolutionNs.PlayerActionModule.Self.IsAcionPressed(ActionType.ActionInteract))
-                {
-                    Pathea.TreasureRevealerNs.TreasureRevealerItem result = treasureInCrosshair();
-                    if (
-                        null != result
-                        )
-                    {
-                        //Main.mod.Logger.Log(string.Format("lastFreshLock {0}", result.GetInstanceID()));
-                        //result.transf.position = Player.Self.GamePos;
-                        // move to player and let autopickup do it's thing.
-                        Pathea.ItemDropNs.ItemDrop itm = result.transf.GetComponent<Pathea.ItemDropNs.ItemDrop>();
-                        itm.transform.position = Player.Self.GamePos;
-                        revealedTreasure.Remove(result);
-                    }
-                }
-
-            }
-            catch (Exception e)
-            {
-                Main.mod.Logger.Error(e.Message);
-                Main.mod.Logger.Error(e.Source);
-                Main.mod.Logger.Error(e.StackTrace);
-            }
-
+            __result = (int)(Main.modSettings.FarmAnimalMaxGrowth * __instance.StandardPoint);
         }
-
-        // determines if within scanner crosshair. code copied from Pathea.TreasureRevealerNs.TreasureRevealerItem::FreshLock()
-        static Pathea.TreasureRevealerNs.TreasureRevealerItem treasureInCrosshair()
-        {
-            try
-            {
-                // Main.mod.Logger.Log(string.Format("treasure revealed count {0}", revealedTreasure.Count));
-                if (revealedTreasure == null || revealedTreasure.Count == 0)
-                {
-                    return null;
-                }
-                Pathea.TreasureRevealerNs.TreasureRevealerItem result = null;
-                float num = 25f;
-                // Main.mod.Logger.Log(string.Format("treasure count {0}", revealedTreasure.Count));
-                for (int i = 0; i < revealedTreasure.Count; i++)
-                {
-                    if (!(revealedTreasure[i] == null))
-                    {
-                        Vector3 v = Pathea.UISystemNs.UIUtils.WorldToScreenWithZ(revealedTreasure[i].pos, Vector2.zero);
-                        //Main.mod.Logger.Log(string.Format("vector v {0}",v.ToString()));
-                        Vector2 screenCoords = Pathea.UISystemNs.UIStateComm.Instance.canvas.GetComponent<RectTransform>().sizeDelta / 2f;
-                        //Main.mod.Logger.Log(string.Format("vector vector {0}", vector.ToString()));
-                        bool inscreen = v.x <= screenCoords.x && v.x >= -screenCoords.x && v.y <= screenCoords.y && v.y >= -screenCoords.y;
-                        // Main.mod.Logger.Log(string.Format("inscreen {0}", inscreen));
-                        if (inscreen && v.z >= 0f)
-                        {
-                            float num2 = Vector2.Distance(Vector2.zero, new Vector2(v.x, v.y));
-                            //Main.mod.Logger.Log(string.Format("distance {0}", num2));
-                            if (num2 < num)
-                            {
-                                result = revealedTreasure[i];
-                                break;
-                            }
-                        }
-                    }
-                }
-                return result;
-            }
-            catch (Exception e)
-            {
-                Main.mod.Logger.Error("altFreshLock");
-                Main.mod.Logger.Error(e.Message);
-                Main.mod.Logger.Error(e.Source);
-                Main.mod.Logger.Error(e.StackTrace);
-            }
-            return null;
-        }
-
     }
+
+
 }
 

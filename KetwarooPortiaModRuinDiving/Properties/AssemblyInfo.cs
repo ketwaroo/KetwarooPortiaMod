@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("KetwarooPortiaModOtherSettings")]
+[assembly: AssemblyTitle("KetwarooPortiaModRuinDiving")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("KetwarooPortiaModOtherSettings")]
+[assembly: AssemblyProduct("KetwarooPortiaModRuinDiving")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0b153417-0208-4e1a-9911-ed09c849a5bd")]
+[assembly: Guid("f9de2d94-286c-4b46-b67e-9a8e0320fcd1")]
 
 // Version information for an assembly consists of the following four values:
 //
