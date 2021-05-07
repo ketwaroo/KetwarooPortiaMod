@@ -102,7 +102,7 @@ namespace KetwarooPortiaModFarming
 
         [Header("Animals")]
         [Draw("Farm Animal Max Growth Multiplier (default ~1.2)", Min = 1, Precision = 2)] public float FarmAnimalMaxGrowth = 1.2F;
-        [Draw("Farm Animal Rescale Coefficient (mitigates super gigantism)", Min = 1, Precision = 2)] public float FarmAnimalRescaleCoeff = 0.25F;
+        [Draw("Farm Animal Rescale Coefficient (mitigates super gigantism)", Min = 0.01, Precision = 2)] public float FarmAnimalRescaleCoeff = 0.25F;
 
         [Header("Plants")]
         [Draw("Planter Harvest Amount Multiplier")] public float PlanterHarvestAmountMultiplier = 1.0F;
@@ -207,7 +207,8 @@ namespace KetwarooPortiaModFarming
             float rescale = 1.0F;
             if (null != ___anm)
             {
-                rescale = 1.0f + ((___anm.ProductionMul-1.0f) * Main.modSettings.FarmAnimalRescaleCoeff);
+                // allow mini animals.
+                rescale = 0.5f + ((___anm.ProductionMul-0.5f) * Main.modSettings.FarmAnimalRescaleCoeff);
             }
             __instance.transform.localScale = Vector3.one * rescale;
             //__instance.gameObject.transform.localScale = Vector3.one * rescale;
