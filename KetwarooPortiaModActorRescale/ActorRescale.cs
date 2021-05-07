@@ -147,7 +147,6 @@ namespace KetwarooPortiaModActorRescale
         [Draw("Actor Female Hip Scale Offset Y (not working)")] public float ActorFemaleHipOffsetY = 0.0F;
         [Draw("Actor Female Hip Scale Offset Z (not working)")] public float ActorFemaleHipOffsetZ = 0.0F;
 
-
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
@@ -158,8 +157,6 @@ namespace KetwarooPortiaModActorRescale
             Main.UpdateStuff();
         }
     }
-
-
 
     // Pathea.ActorNs.Actor
     [HarmonyPatch(typeof(Pathea.ActorNs.Actor))]

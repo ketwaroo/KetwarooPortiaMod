@@ -106,8 +106,12 @@ namespace KetwarooPortiaModPlayerActions
 
         [Header("Running")]
         [Draw("Run Speed Multiplier", Precision = 2, Min = 0.01F)] public float RunMultiplier = 1.0F;
+
         [Header("Jumping")]
         [Draw("Jump Initial Speed Multiplier")] public float JumpInitialSpeed = 1.0F;
+
+        [Header("Misc")]
+        [Draw("Drill/Chainsaw Forward Drift Speed (AutoMove to toggle).")] public float DrillDriftSpeed = 1.5F;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
@@ -440,6 +444,19 @@ namespace KetwarooPortiaModPlayerActions
             else
             {
                 AnimHelper.currentPlayerInteractionTarget = 0;
+            }
+
+            if (
+                Main.modSettings.DrillDriftSpeed > 0.0F
+                && __instance.IsAutoMove()
+                && (
+                  __instance.IsActionRunning(Pathea.ACT.ACType.Chainsaw)
+                   || __instance.IsActionRunning(Pathea.ACT.ACType.Drilling)
+                  )
+                )
+            {
+                Vector3 direction = Main.modSettings.DrillDriftSpeed * Pathea.CameraSystemNs.CameraManager.Instance.SourceCamera.transform.forward;
+                ___playingActor.motor.MoveBySpeed(direction);
             }
 
         }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7F9F4779-DDE6-46B4-9DA0-C8A60EF45200}</ProjectGuid>
+    <ProjectGuid>{36EC1D17-271D-4404-99E6-C979EF2181C3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KetwarooPortiaModGiveItem</RootNamespace>
-    <AssemblyName>KetwarooPortiaModGiveItem</AssemblyName>
+    <RootNamespace>KetwarooPortiaModCrafting</RootNamespace>
+    <AssemblyName>KetwarooPortiaModCrafting</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -53,12 +53,20 @@
       <HintPath>..\Ref\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>..\Ref\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\Ref\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>..\Ref\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule">
+      <HintPath>..\Ref\UnityEngine.TerrainModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
@@ -75,7 +83,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GiveItem.cs" />
+    <Compile Include="FactorySharedContainerBase.cs" />
+    <Compile Include="FactorySharedContainerFinishedProduct.cs" />
+    <Compile Include="FactorySharedContainerMaterials.cs" />
+    <Compile Include="Crafting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

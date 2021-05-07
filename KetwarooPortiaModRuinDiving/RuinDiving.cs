@@ -137,8 +137,6 @@ namespace KetwarooPortiaModRuinDiving
                 dmg = (Main.modSettings.DigItemPerHitCap * 600F);
             }
         }
-
-
     }
 
 

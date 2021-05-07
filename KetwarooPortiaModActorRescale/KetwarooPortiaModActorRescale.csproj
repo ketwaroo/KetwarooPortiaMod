@@ -63,6 +63,7 @@
     </Reference>
     <Reference Include="UnityEngine.TerrainModule">
       <HintPath>..\Ref\UnityEngine.TerrainModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\Ref\UnityEngine.UI.dll</HintPath>

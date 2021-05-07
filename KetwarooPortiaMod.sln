@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaModRuinDiving
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaModPlayerActions", "KetwarooPortiaModPlayerActions\KetwarooPortiaModPlayerActions.csproj", "{26B34DDE-C3B6-4253-8CDB-19292930C035}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaModCrafting", "KetwarooPortiaModCrafting\KetwarooPortiaModCrafting.csproj", "{36EC1D17-271D-4404-99E6-C979EF2181C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KetwarooPortiaModFarming", "KetwarooPortiaModFarming\KetwarooPortiaModFarming.csproj", "{5DFCD95B-C707-4821-B07D-7E5A80B331A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{26B34DDE-C3B6-4253-8CDB-19292930C035}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26B34DDE-C3B6-4253-8CDB-19292930C035}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26B34DDE-C3B6-4253-8CDB-19292930C035}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36EC1D17-271D-4404-99E6-C979EF2181C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36EC1D17-271D-4404-99E6-C979EF2181C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36EC1D17-271D-4404-99E6-C979EF2181C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36EC1D17-271D-4404-99E6-C979EF2181C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DFCD95B-C707-4821-B07D-7E5A80B331A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DFCD95B-C707-4821-B07D-7E5A80B331A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DFCD95B-C707-4821-B07D-7E5A80B331A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DFCD95B-C707-4821-B07D-7E5A80B331A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -56,6 +56,7 @@
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
       <HintPath>..\Ref\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>E:\GAMES\My Time At Portia\Portia_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
@@ -67,12 +68,15 @@
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>E:\GAMES\My Time At Portia\Portia_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TerrainModule">
       <HintPath>..\Ref\UnityEngine.TerrainModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TerrainPhysicsModule">
       <HintPath>E:\GAMES\My Time At Portia\Portia_Data\Managed\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>E:\GAMES\My Time At Portia\Portia_Data\Managed\UnityEngine.UI.dll</HintPath>
