@@ -38,7 +38,6 @@ namespace KetwarooPortiaModEnableDlc
             return true;
         }
 
-
         static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
         {
             enabled = value;

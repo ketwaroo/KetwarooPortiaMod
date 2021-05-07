@@ -15,7 +15,6 @@ using System.Text.RegularExpressions;
 using System.Collections;
 using System.Linq;
 
-
 namespace KetwarooPortiaModCrafting
 {
     public class Main

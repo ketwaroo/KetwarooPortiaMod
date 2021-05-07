@@ -535,7 +535,5 @@ namespace KetwarooPortiaMod
         }
 
     }
-
-
 }
 

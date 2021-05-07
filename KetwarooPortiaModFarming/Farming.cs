@@ -76,7 +76,6 @@ namespace KetwarooPortiaModFarming
 
         }
 
-
         public static void inGameNotify(string message)
         {
             Pathea.TipsNs.TipsMgr.Instance.SendSimpleTip(message);

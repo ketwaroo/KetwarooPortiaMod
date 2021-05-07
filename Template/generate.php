@@ -63,7 +63,7 @@ foreach ($csproj as $c) {
 
     $info->AssemblyName = "{$assemblyName}.dll";
     $info->EntryMethod  = "{$assemblyName}.Main.Load";
-    $info->Repository = "https://raw.githubusercontent.comketwaroo/KetwarooPortiaMod/master/Repository.json";
+    $info->Repository = "https://raw.githubusercontent.com/ketwaroo/KetwarooPortiaMod/master/Repository.json";
 
     FileSystem::prepareDirectory($outDir);
 

@@ -72,7 +72,6 @@ namespace KetwarooPortiaModPlayerActions
 
         }
 
-
         public static void dump(object obj)
         {
             if (null != obj)

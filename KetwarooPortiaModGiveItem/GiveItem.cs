@@ -41,7 +41,6 @@ namespace KetwarooPortiaModGiveItem
 
             return true;
         }
-
         public static void GiveItem(int itemId, int number)
         {
             mod.Logger.Log(string.Format("give item {0} {1}", itemId, number));

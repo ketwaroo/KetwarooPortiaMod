@@ -287,5 +287,4 @@ namespace KetwarooPortiaModRuinDiving
             __result = Main.modSettings.GameTimeUsedPerDungeon;
         }
     }
-
 }
