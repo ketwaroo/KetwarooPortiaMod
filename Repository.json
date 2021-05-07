@@ -3,42 +3,42 @@
         {
             "Id": "KetwarooPortiaMod",
             "Version": "0.1.1620405946",
-            "DownloadUri": "https:\/\/github.com\/ketwaroo\/KetwarooPortiaMod\/releases\/latest\/download\/KetwarooPortiaMod.zip"
+            "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaMod.zip"
         },
         {
             "Id": "KetwarooPortiaModCrafting",
             "Version": "0.1.1620405947",
-            "DownloadUri": "https:\/\/github.com\/ketwaroo\/KetwarooPortiaMod\/releases\/latest\/download\/KetwarooPortiaModCrafting.zip"
+            "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaModCrafting.zip"
         },
         {
             "Id": "KetwarooPortiaModActorRescale",
             "Version": "0.1.1620405946",
-            "DownloadUri": "https:\/\/github.com\/ketwaroo\/KetwarooPortiaMod\/releases\/latest\/download\/KetwarooPortiaModActorRescale.zip"
+            "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaModActorRescale.zip"
         },
         {
             "Id": "KetwarooPortiaModEnableDlc",
             "Version": "0.1.1620405946",
-            "DownloadUri": "https:\/\/github.com\/ketwaroo\/KetwarooPortiaMod\/releases\/latest\/download\/KetwarooPortiaModEnableDlc.zip"
+            "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaModEnableDlc.zip"
         },
         {
             "Id": "KetwarooPortiaModFarming",
             "Version": "0.1.1620409232",
-            "DownloadUri": "https:\/\/github.com\/ketwaroo\/KetwarooPortiaMod\/releases\/latest\/download\/KetwarooPortiaModFarming.zip"
+            "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaModFarming.zip"
         },
         {
             "Id": "KetwarooPortiaModGiveItem",
             "Version": "0.1.1620405946",
-            "DownloadUri": "https:\/\/github.com\/ketwaroo\/KetwarooPortiaMod\/releases\/latest\/download\/KetwarooPortiaModGiveItem.zip"
+            "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaModGiveItem.zip"
         },
         {
             "Id": "KetwarooPortiaModPlayerActions",
             "Version": "0.1.1620405988",
-            "DownloadUri": "https:\/\/github.com\/ketwaroo\/KetwarooPortiaMod\/releases\/latest\/download\/KetwarooPortiaModPlayerActions.zip"
+            "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaModPlayerActions.zip"
         },
         {
             "Id": "KetwarooPortiaModRuinDiving",
             "Version": "0.1.1620405946",
-            "DownloadUri": "https:\/\/github.com\/ketwaroo\/KetwarooPortiaMod\/releases\/latest\/download\/KetwarooPortiaModRuinDiving.zip"
+            "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaModRuinDiving.zip"
         }
     ]
 }

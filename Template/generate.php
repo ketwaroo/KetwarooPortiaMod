@@ -16,13 +16,12 @@ else {
 
 $targetDir   = FileSystem::osPath('E:/GAMES/My Time At Portia/Mods');
 $defaultInfo = json_decode(file_get_contents(__DIR__ . '/InfoTpl.json'));
-$releaseFile = dirname(__DIR__).'/Repository.json';
-$releases = is_file($releaseFile)?json_decode(file_get_contents($releaseFile),true):[
-    "Releases"=>[],
+$releaseFile = dirname(__DIR__) . '/Repository.json';
+$releases    = is_file($releaseFile) ? json_decode(file_get_contents($releaseFile), true) : [
+    "Releases" => [],
 ];
-$relTmp = [];
-foreach($releases['Releases'] as $r)
-{
+$relTmp      = [];
+foreach ($releases['Releases'] as $r) {
     $relTmp[$r['Id']] = $r;
 }
 
@@ -44,7 +43,10 @@ foreach ($csproj as $c) {
     $outInfoJson = FileSystem::osPath("{$outDir}/Info.json");
     $outDll      = FileSystem::osPath("{$outDir}/{$assemblyName}.dll");
 
-    if (is_file($outDll) && filemtime($outDll) >= filemtime($dllPath)) {
+    if (
+        is_file($outDll)
+        && filemtime($outDll) >= filemtime($dllPath)
+    ) {
         prnt("skip $assemblyName");
         continue;
     }
@@ -63,13 +65,13 @@ foreach ($csproj as $c) {
 
     $info->AssemblyName = "{$assemblyName}.dll";
     $info->EntryMethod  = "{$assemblyName}.Main.Load";
-    $info->Repository = "https://raw.githubusercontent.com/ketwaroo/KetwarooPortiaMod/master/Repository.json";
+    $info->Repository   = "https://raw.githubusercontent.com/ketwaroo/KetwarooPortiaMod/master/Repository.json";
 
     FileSystem::prepareDirectory($outDir);
 
     copy($dllPath, $outDll);
     file_put_contents($outInfoJson, json_encode($info, JSON_PRETTY_PRINT));
-    
+
 
 
     $z = new ZipArchive();
@@ -79,14 +81,13 @@ foreach ($csproj as $c) {
     $z->addFile($outDll, basename($outDll));
     $z->addFile($outInfoJson, basename($outInfoJson));
     $z->close();
-    $relTmp[$info->Id]=[
-        'Id'=>$info->Id,
-        'Version'=>$info->Version,
-        'DownloadUri'=>"https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/{$assemblyName}.zip",
+    $relTmp[$info->Id] = [
+        'Id'          => $info->Id,
+        'Version'     => $info->Version,
+        'DownloadUrl' => "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/{$assemblyName}.zip",
     ];
-  
 }
 
 file_put_contents($releaseFile, json_encode([
-    "Releases"=> array_values($relTmp),
-],JSON_PRETTY_PRINT));
+    "Releases" => array_values($relTmp),
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
