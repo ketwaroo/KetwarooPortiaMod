@@ -2,17 +2,17 @@
     "Releases": [
         {
             "Id": "KetwarooPortiaMod",
-            "Version": "0.1.1620501079",
+            "Version": "0.1.1620607069",
             "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaMod.zip"
         },
         {
             "Id": "KetwarooPortiaModCrafting",
-            "Version": "0.1.1620405947",
+            "Version": "0.1.1620607069",
             "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaModCrafting.zip"
         },
         {
             "Id": "KetwarooPortiaModActorRescale",
-            "Version": "0.1.1620405946",
+            "Version": "0.1.1620607069",
             "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaModActorRescale.zip"
         },
         {
@@ -32,7 +32,7 @@
         },
         {
             "Id": "KetwarooPortiaModPlayerActions",
-            "Version": "0.1.1620500983",
+            "Version": "0.1.1620542276",
             "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaModPlayerActions.zip"
         },
         {
