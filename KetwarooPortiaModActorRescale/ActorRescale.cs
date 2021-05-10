@@ -126,23 +126,21 @@ namespace KetwarooPortiaModActorRescale
     public class Settings : UnityModManager.ModSettings, IDrawable
     {
         [Header("Actor Scale")]
-        [Draw("Head Size Default", Precision = 3, Min = 0.01F)] public float ActorHeadScale = 1.0F;
-        [Draw("Head Size Player_Male", Precision = 3, Min = 0.01F)] public float ActorHeadScalePlayer_Male = 1.0F;
-        [Draw("Head Size Player_Female", Precision = 3, Min = 0.01F)] public float ActorHeadScalePlayer_Female = 1.0F;
-        [Draw("Head Size Npc_Thin", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Thin = 1.0F;
-        [Draw("Head Size Npc_Medium", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Medium = 1.0F;
-        [Draw("Head Size Npc_Tall", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Tall = 1.0F;
-        [Draw("Head Size Npc_Strong", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Strong = 1.0F;
-        [Draw("Head Size Npc_Fat", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Fat = 1.0F;
-        [Draw("Head Size Npc_Little", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Little = 1.0F;
-        [Draw("Head Size Npc_Baby", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Baby = 1.0F;
+        [Draw("Head Scale Default", Precision = 3, Min = 0.01F)] public float ActorHeadScale = 1.0F;
+        [Draw("Head Scale Player_Male", Precision = 3, Min = 0.01F)] public float ActorHeadScalePlayer_Male = 1.0F;
+        [Draw("Head Scale Player_Female", Precision = 3, Min = 0.01F)] public float ActorHeadScalePlayer_Female = 1.0F;
+        [Draw("Head Scale Npc_Thin", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Thin = 1.0F;
+        [Draw("Head Scale Npc_Medium", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Medium = 1.0F;
+        [Draw("Head Scale Npc_Tall", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Tall = 1.0F;
+        [Draw("Head Scale Npc_Strong", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Strong = 1.0F;
+        [Draw("Head Scale Npc_Fat (mayor,Hulu bros., etc)", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Fat = 1.0F;
+        [Draw("Head Scale Npc_Little", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Little = 1.0F;
+        [Draw("Head Scale Npc_Baby", Precision = 3, Min = 0.01F)] public float ActorHeadScaleNpc_Baby = 1.0F;
 
         [Draw("Actor Scale", Precision = 3, Min = 0.01F)] public float ActorScaleMultiplier = 1.0F;
         [Draw("Player Scale Multiplier", Precision = 3, Min = 0.001F)] public float PlayerScaleMultiplier = 1.0F;
 
-        [Draw("Actor Female Hip Scale")] public Vector3 ActorFemaleHipScale = Vector3.one;
-        [Draw("Actor Female Hip Z (width) Scale", Precision = 3, Min = 1.0F, Max = 2.0F)] public float ActorFemaleHipScaleZ = 1.0F;
-        [Draw("Actor Female Hip Y (thickness) Scale", Precision = 3, Min = 1.0F, Max = 2.0F)] public float ActorFemaleHipScaleY = 1.0F;
+        [Draw("Actor Female Hip Scale (x is vertical, y is thickness, z is witdh.)")] public Vector3 ActorFemaleHipScale = Vector3.one;
 
         [Draw("Actor Female Hip Scale Offset Y (not working)")] public float ActorFemaleHipOffsetY = 0.0F;
         [Draw("Actor Female Hip Scale Offset Z (not working)")] public float ActorFemaleHipOffsetZ = 0.0F;

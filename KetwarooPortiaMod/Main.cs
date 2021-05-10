@@ -29,7 +29,8 @@ namespace KetwarooPortiaMod
         {
 
             modSettings = UnityModManager.ModSettings.Load<Settings>(modEntry);
-
+            //UnityEngine.Debug.logger.logEnabled =false;
+            Debug.unityLogger.logEnabled = modSettings.UnityDebugLogEnabled;
             mod = modEntry;
             UpdateStuff();
             modEntry.OnToggle = OnToggle;
@@ -40,8 +41,7 @@ namespace KetwarooPortiaMod
 
             var harmony = new Harmony(modEntry.Info.Id);
 
-            //UnityEngine.Debug.logger.logEnabled =false;
-            Debug.unityLogger.logEnabled = true;
+
 
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
@@ -96,30 +96,50 @@ namespace KetwarooPortiaMod
                 ////                Terrain mainTerrain =null;
 
                 //Terrain waterTerrain = null;
-                ////                global::UnityEngine.GameObject gameObject = global::UnityEngine.GameObject.Find("Root/Terrain/Land");
-                ////                if (gameObject != null)
-                ////                {
-                ////                    mainTerrain = gameObject.GetComponent<global::UnityEngine.Terrain>();
-                ////                }
+                //                global::UnityEngine.GameObject gameObject = global::UnityEngine.GameObject.Find("Root/Terrain/Land");
+                //                if (gameObject != null)
+                //                {
+                //                    mainTerrain = gameObject.GetComponent<global::UnityEngine.Terrain>();
+                //                }
                 //global::UnityEngine.GameObject gameObject2 = global::UnityEngine.GameObject.Find("Root/Terrain/SeaPlane_Splite");
                 //if (gameObject2 != null)
                 //{
                 //    dump("Water terrain: " + gameObject2.name);
                 //    waterTerrain = gameObject2.GetComponent<Terrain>();
-                //    MeshCollider col = waterTerrain.gameObject.AddComponent<MeshCollider>();
-                //    MeshCollider col2 = gameObject2.AddComponent<MeshCollider>();
-                //    col.enabled = true;
-                //    col2.enabled = true;
+
+                //    TerrainCollider col = waterTerrain.gameObject.GetComponent<TerrainCollider>();
+                //    if (null != col)
+                //    {
+                //        dmp("TerrainCollider", col.ToString());
+                //        col.enabled = true;
+                //        Mesh mesh = col.GetComponentInChildren<MeshFilter>()?.mesh;
+                //        Renderer rend = col.GetComponentInChildren<Renderer>();
+                //        if (null != mesh)
+                //        {
+                //            dmp("TerrainCollider Mesh", mesh.ToString());
+                //        }
+
+                //        if (null != rend)
+                //        {
+                //            dmp("TerrainCollider Renderer", rend.ToString());
+                //            rend.material.color = Color.green;
+                //        }
+                //    }
+                //    //MeshCollider col2 = gameObject2.AddComponent<MeshCollider>();
+
+
+
+                //    //col2.enabled = true;
                 //}
 
-                ////                if (mainTerrain != null && waterTerrain != null && terrainRigidBody!=null) {
+                //                if (mainTerrain != null && waterTerrain != null && terrainRigidBody!=null) {
 
-                ////                    Main.dump("have terrains");
-                ////                    waterTerrain.coll
-                ////Rigidbody waterRigidBody = waterTerrain.gameObject.AddComponent<Rigidbody>(); // Add the rigidbody.
+                //                    Main.dump("have terrains");
+                //                    waterTerrain.coll
+                //Rigidbody waterRigidBody = waterTerrain.gameObject.AddComponent<Rigidbody>(); // Add the rigidbody.
 
-                ////                    waterRigidBody.mass = 5; // Set the GO's mass to 5 via the Rigidbody.
-                ////                }
+                //                    waterRigidBody.mass = 5; // Set the GO's mass to 5 via the Rigidbody.
+                //                }
 
 
 
@@ -221,7 +241,7 @@ namespace KetwarooPortiaMod
         [Header("Player Modification")]
 
         [Draw("Player Stats Multiplier Hp/Sp/Atk/Def/etc..", Precision = 2, Min = 0.1F)] public float PlayerStatsMultiplier = 1.0F;
-        [Draw("Player Defence Boost", Min = 0)] public float PlayerDefenceBoost = 100.0F;
+        [Draw("Player Defence Boost (Adds to player base defense. Easily makes you near impossible to kill.)")] public float PlayerDefenceBoost = 100.0F;
         [Draw("Player Critical Chance Multiplier")] public float PlayerCriticalChanceMultiplier = 1.0F;
         [Draw("Player Critical Amount Multiplier")] public float PlayerCriticalAmountMultiplier = 1.0F;
 
@@ -232,22 +252,23 @@ namespace KetwarooPortiaMod
         [Draw("Regen Stamina")] public float StaminaPerSecond = 1.0F;
 
         [Header("Missions")]
-        [Draw("Research Speed Multiplier")] public float ResearchSpeed = 1.0F;
-        [Draw("Player Mission Reward Multiplier")] public float PlayerMissionRewardMultiplier = 1.0F;
+        [Draw("Research Speed Multiplier (Higher means faster.)", Vertical = true)] public float ResearchSpeed = 1.0F;
+        [Draw("Player Mission Reward Multiplier(Higher means more rewards)")] public float PlayerMissionRewardMultiplier = 1.0F;
 
         [Header("Resources")]
-        [Draw("Days To Regrow Tree")] public int TreeRegrowDays = Pathea.ConfigNs.OtherConfig.Self.TreeFreshDate;
+        [Draw("Days To Regrow Tree (default=5)")] public int TreeRegrowDays = Pathea.ConfigNs.OtherConfig.Self.TreeFreshDate;
 
         [Header("Relationships")]
-        [Draw("Date mood bonus per kill in Ghost Cave event.")] public int GhostGameMoodBonusPerKill = 0;
+        [Draw("Date mood bonus per kill in Ghost Cave event. (Other skill bonuses may apply if non-zero.")] public int GhostGameMoodBonusPerKill = 0;
 
         [Header("Misc/Useless/Not Working")]
-        [Draw("Ignore Water")] public bool IgnoreWater = false;
+        [Draw("Ignore Water (Attempt to walk on water.)")] public bool IgnoreWater = false;
         [Draw("Blood Effect Percent")] public float BloodEffectPercent = Pathea.ConfigNs.OtherConfig.Self.BloodEffect_Percent;
         [Draw("Player Mission Max Count")] public int PlayerMissionMaxCount = Pathea.ConfigNs.OtherConfig.Self.PlayerMissionMaxCount;
 
         [Draw("Debug Key, to trigger random things.")] public UnityModManagerNet.KeyBinding DebugKey = new UnityModManagerNet.KeyBinding { keyCode = KeyCode.V };
-
+        [Draw("Unity Debug Log Enabled (output_log.txt).")] public bool UnityDebugLogEnabled = false;
+        
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
@@ -255,7 +276,7 @@ namespace KetwarooPortiaMod
 
         public void OnChange()
         {
-            
+
         }
     }
 
@@ -447,6 +468,13 @@ namespace KetwarooPortiaMod
         [HarmonyPatch("Update")]
         static void PostfixUpdate(ref Pathea.ActorNs.Actor __instance)
         {
+
+            if (Input.GetKeyDown(Main.modSettings.DebugKey.keyCode))
+            {
+
+
+
+            }
 
             //if (__instance.IsActorType(ActorTag.Player)/* && Input.GetKeyDown(Main.modSettings.DebugKey.keyCode)*/)
             //{

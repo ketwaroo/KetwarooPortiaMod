@@ -102,13 +102,13 @@ namespace KetwarooPortiaModFarming
 
         [Header("Animals")]
         [Draw("Farm Animal Max Growth Multiplier (default ~1.2)", Min = 1, Precision = 2)] public float FarmAnimalMaxGrowth = 1.2F;
-        [Draw("Farm Animal Rescale Coefficient (mitigates super gigantism)", Min = 0.01, Precision = 2)] public float FarmAnimalRescaleCoeff = 0.25F;
+
+        [Draw("Farm Animal Rescale Limiter (mitigates super gigantism)", Min = 0.001, Max = 1.0, Type = DrawType.Slider, Precision = 3)] public float FarmAnimalRescaleCoeff = 0.25F;
 
         [Header("Plants")]
         [Draw("Planter Harvest Amount Multiplier")] public float PlanterHarvestAmountMultiplier = 1.0F;
         [Draw("Planter Growth Speed Multiplier")] public float PlanterGrowthSpeedMultiplier = 1.0F;
-        [Draw("Happy Plant Bonus Multiplier (fertilizer required multiplier)")] public float PlanterHappySeedMultiplier = 1.0F;
-
+        [Draw("Happy Plant Bonus Coefficient (reduce fertilizer required.)")] public float PlanterHappySeedCoeff = 1.0F;
 
         public override void Save(UnityModManager.ModEntry modEntry)
         {
@@ -146,14 +146,14 @@ namespace KetwarooPortiaModFarming
         [HarmonyPatch("GrowPerfectNutrient", MethodType.Getter)]
         static void PostfixGrowPerfectNutrient(ref int __result)
         {
-            __result = Mathf.RoundToInt(__result * Main.modSettings.PlanterHappySeedMultiplier);
+            __result = Mathf.RoundToInt(__result * Main.modSettings.PlanterHappySeedCoeff);
         }
 
         [HarmonyPostfix]
         [HarmonyPatch("GrowPerfectExtraDrop", MethodType.Getter)]
         static void PostfixGrowPerfectExtraDrop(ref int __result)
         {
-            __result = Mathf.RoundToInt(__result * Main.modSettings.PlanterHappySeedMultiplier);
+            __result = Mathf.RoundToInt(__result * Main.modSettings.PlanterHappySeedCoeff);
         }
     }
 
@@ -208,7 +208,7 @@ namespace KetwarooPortiaModFarming
             if (null != ___anm)
             {
                 // allow mini animals.
-                rescale = 0.5f + ((___anm.ProductionMul-0.5f) * Main.modSettings.FarmAnimalRescaleCoeff);
+                rescale = 0.25f + ((___anm.ProductionMul - 0.5f) * Main.modSettings.FarmAnimalRescaleCoeff);
             }
             __instance.transform.localScale = Vector3.one * rescale;
             //__instance.gameObject.transform.localScale = Vector3.one * rescale;
@@ -235,6 +235,7 @@ namespace KetwarooPortiaModFarming
         [HarmonyPatch("ProductionMul", MethodType.Getter)]
         static void PostfixTotalPoint(ref Pathea.AnimalFarmNs.AnimalinFarm __instance, ref float __result, ref float ___age)
         {
+            // make production reflect the percentage above the farm animal instead of maxing out at 1X
             __result = (___age / (float)__instance.Data.StandardPoint) * Main.modSettings.FarmAnimalMaxGrowth;
         }
     }

@@ -111,9 +111,9 @@ namespace KetwarooPortiaModCrafting
         [Header("Crafting/Resources")]
 
         [Draw("Crafting Cost Multiplier (floors at 1 material cost.)")] public float CostCrafting = 1.0F;
-        [Draw("Crafting Time Multiplier")] public float TimeCraftingMultiplier = 1.0F;
+        [Draw("Crafting Time Multiplier (0.5 halves time)")] public float TimeCraftingMultiplier = 1.0F;
 
-        [Draw("Factory Performance/Transport Level Cap")] public int FactoryPerformanceLevelCap = 999;
+        [Draw("Factory Performance/Transport Upgrades Level Cap")] public int FactoryPerformanceLevelCap = 999;
         [Draw("Factory Performance/Transport Gain Per Level")] public float FactoryPerformanceLevelGain = 0.05F;
 
         [Draw("Connect Factory Resources For Crafting")] public bool FactoryConnectCraftingResources = true;
@@ -340,12 +340,12 @@ namespace KetwarooPortiaModCrafting
             {
                 return true;
             }
-            Main.dump("skipping Pathea.CreationFactory.CreationAutomaticRoomData::RemoveMaterial");
-            foreach (IdCount i in material)
-            {
-                Main.dmp("i.ToString()", i.ToString());
-                Main.dmp("i.count", i.count);
-            }
+            //Main.dump("skipping Pathea.CreationFactory.CreationAutomaticRoomData::RemoveMaterial");
+            //foreach (IdCount i in material)
+            //{
+            //    Main.dmp("i.ToString()", i.ToString());
+            //    Main.dmp("i.count", i.count);
+            //}
             // prevent double dipping resources.
             Pathea.ItemSystem.ItemPackage.RemoveItemList(material, true, true);
 
@@ -360,12 +360,12 @@ namespace KetwarooPortiaModCrafting
             {
                 return true;
             }
-            Main.dump("skipping Pathea.CreationFactory.CreationAutomaticRoomData::CheckMaterialItemEnough");
-            foreach (IdCount i in material)
-            {
-                Main.dmp("i.ToString()", i.ToString());
-                Main.dmp("i.count", i.count);
-            }
+            //Main.dump("skipping Pathea.CreationFactory.CreationAutomaticRoomData::CheckMaterialItemEnough");
+            //foreach (IdCount i in material)
+            //{
+            //    Main.dmp("i.ToString()", i.ToString());
+            //    Main.dmp("i.count", i.count);
+            //}
             // prevent double dipping resources.
             bool result = Pathea.ItemSystem.ItemPackage.CheckEnough(material, true);
             __result = result;
@@ -381,10 +381,8 @@ namespace KetwarooPortiaModCrafting
             {
                 return true;
             }
-            Main.dump("skipping Pathea.CreationFactory.CreationAutomaticRoomData::GetItemCount");
-
-            Main.dmp("id", id);
-
+            //Main.dump("skipping Pathea.CreationFactory.CreationAutomaticRoomData::GetItemCount");
+            //Main.dmp("id", id);
 
             // prevent double dipping resources.
             int result = Pathea.ItemSystem.ItemPackage.GetItemCount(id, true);
@@ -477,6 +475,7 @@ namespace KetwarooPortiaModCrafting
         static void PostfixGetDashBoardSpeed(ref float __result, ref Pathea.FarmFactoryNs.FarmFactory __instance)
         {
             // should already be applied at compount item level.
+            // automatic crafting time  cna be improved with research levels.
             //__result *= Main.modSettings.TimeCraftingMultiplier;
         }
 

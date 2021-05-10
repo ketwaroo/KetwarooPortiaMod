@@ -102,7 +102,6 @@ namespace KetwarooPortiaModPlayerActions
         [Draw("Chainsaw")] public float AnimChainsawSpeedMult = 1.0F;
         [Draw("Petting Animals")] public float AnimPetSpeedMult = 1.0F;
 
-
         [Header("Running")]
         [Draw("Run Speed Multiplier", Precision = 2, Min = 0.01F)] public float RunMultiplier = 1.0F;
 
@@ -364,6 +363,7 @@ namespace KetwarooPortiaModPlayerActions
             }
         }
 
+
         [HarmonyPostfix]
         [HarmonyPatch("Update")]
         static void PostfixUpdate(Pathea.ActorNs.Actor __instance)
@@ -376,9 +376,11 @@ namespace KetwarooPortiaModPlayerActions
             else
             {
                 AnimHelper.setNPCSpeed(__instance);
+
             }
         }
     }
+
 
     [HarmonyPatch(typeof(Pathea.Player))]
     static class Pathea_Player_Patches
