@@ -58,6 +58,7 @@ namespace KetwarooPortiaMod
             {
                 UpdateStuff();
                 dmp("Pathea.Player.Self.actor.IsGround", Pathea.Player.Self.actor.IsGround());
+                dmp(" Pathea.Player.Self.actor.gamePos", Pathea.Player.Self.actor.gamePos.ToString());
 
                 //Terrain[] ts = UnityEngine.GameObject.FindObjectsOfType<Terrain>();
 
@@ -252,7 +253,7 @@ namespace KetwarooPortiaMod
         [Draw("Regen Stamina")] public float StaminaPerSecond = 1.0F;
 
         [Header("Missions")]
-        [Draw("Research Speed Multiplier (Higher means faster.)", Vertical = true)] public float ResearchSpeed = 1.0F;
+        [Draw("Research Speed Multiplier (Higher means faster.)")] public float ResearchSpeed = 1.0F;
         [Draw("Player Mission Reward Multiplier(Higher means more rewards)")] public float PlayerMissionRewardMultiplier = 1.0F;
 
         [Header("Resources")]
@@ -260,6 +261,8 @@ namespace KetwarooPortiaMod
 
         [Header("Relationships")]
         [Draw("Date mood bonus per kill in Ghost Cave event. (Other skill bonuses may apply if non-zero.")] public int GhostGameMoodBonusPerKill = 0;
+        [Draw("Unlimited Talk Favour Gain")] public bool UnlimitedTalkFavourGain = false;
+        [Draw("Talk Favour Gain Bonus")] public int TalkFavourGainBonus = 0;
 
         [Header("Misc/Useless/Not Working")]
         [Draw("Ignore Water (Attempt to walk on water.)")] public bool IgnoreWater = false;
@@ -268,7 +271,7 @@ namespace KetwarooPortiaMod
 
         [Draw("Debug Key, to trigger random things.")] public UnityModManagerNet.KeyBinding DebugKey = new UnityModManagerNet.KeyBinding { keyCode = KeyCode.V };
         [Draw("Unity Debug Log Enabled (output_log.txt).")] public bool UnityDebugLogEnabled = false;
-        
+
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
@@ -560,6 +563,39 @@ namespace KetwarooPortiaMod
         static void PostfixPlayerMissionMaxCount(ref int __result)
         {
             __result = Main.modSettings.PlayerMissionMaxCount;
+        }
+
+    }
+
+    [HarmonyPatch(typeof(Pathea.FavorSystemNs.FavorBehavior_Dialog))]
+    class Pathea_FavorSystemNs_FavorBehavior_Dialog_Patches
+    {
+
+        [HarmonyPostfix]
+        [HarmonyPatch("Pathea.FavorSystemNs.IFavorBehavior.CanExecute")]
+        static void PostfixCanExecute(ref bool __result)
+        {
+            if (Main.modSettings.UnlimitedTalkFavourGain)
+                __result = true;
+        }
+
+    }
+
+    [HarmonyPatch(typeof(Pathea.FeatureNs.FeatureModule))]
+    class Pathea_FeatureNs_FeatureModule_Patches
+    {
+
+        [HarmonyPostfix]
+        [HarmonyPatch("ModifyFloat")]
+        static void PostfixModifyFloat(ref float __result, Pathea.FeatureNs.FeatureType type)
+        {
+            switch (type) {
+                case Pathea.FeatureNs.FeatureType.TalkFavor:
+                    __result += Main.modSettings.TalkFavourGainBonus;
+
+                    break;
+            }
+             
         }
 
     }

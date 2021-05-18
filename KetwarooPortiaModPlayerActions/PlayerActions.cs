@@ -244,6 +244,8 @@ namespace KetwarooPortiaModPlayerActions
                 case "HandsAttack_3":
                 case "Shoot":
                 case "SMG_GunStart_Fire":
+                case "FireStarter":
+                case "FireStarter_Fire":
                     mainType = "Attack";
                     break;
 
@@ -277,10 +279,17 @@ namespace KetwarooPortiaModPlayerActions
                 case "Touch_Animal_High":
                 case "Horse_Touch":
                 case "Petting":
+                case "Petting_Cat":
+                case "Petting_Dog":
+                case "Embrace":
                 case "Embrace_Cat":
                 case "Embrace_Dog":
-                    mainType = "Pet";
+                // human interactions?
+                case "Interact_Kiss":
+                     mainType = "Pet";
                     break;
+
+
 
                 case "Throw_1":
                 case "Throw_2":
@@ -289,7 +298,7 @@ namespace KetwarooPortiaModPlayerActions
                     break;
                 // ignore for now.
                 case "AttackTouchAnimal":
-                case "FireStarter_Fire":
+                
                 case "Hit":
                 case "Hit1":
                 case "Hit2":
@@ -310,7 +319,7 @@ namespace KetwarooPortiaModPlayerActions
                     break;
 
                 default:
-
+                    Main.dump("Anim: " + animName);
                     break;
             }
 

@@ -142,9 +142,6 @@ namespace KetwarooPortiaModActorRescale
 
         [Draw("Actor Female Hip Scale (x is vertical, y is thickness, z is witdh.)")] public Vector3 ActorFemaleHipScale = Vector3.one;
 
-        [Draw("Actor Female Hip Scale Offset Y (not working)")] public float ActorFemaleHipOffsetY = 0.0F;
-        [Draw("Actor Female Hip Scale Offset Z (not working)")] public float ActorFemaleHipOffsetZ = 0.0F;
-
         public override void Save(UnityModManager.ModEntry modEntry)
         {
             Save(this, modEntry);
