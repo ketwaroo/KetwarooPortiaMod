@@ -105,16 +105,20 @@ namespace KetwarooPortiaModGiveItem
 
                     });
                 }
-
-                itemMenu = Pathea.UISystemNs.UIUtils.ShowItemChoice(items, null, true, GiveItem, false);
-
                 // because this doesn't work by default?
-                Pathea.UISystemNs.UIStateComm.Instance.SetCursor(true);
-                itemMenu.OnCancelCallBack = delegate
-                {
-                    Pathea.UISystemNs.UIStateComm.Instance.SetCursor(false);
-                };
+                bool currentCursorState = Pathea.UISystemNs.UIStateComm.Instance.cursorVisiable;
 
+                // not previously in a menu otherwise could get stuck
+                if (!currentCursorState)
+                {
+                    itemMenu = Pathea.UISystemNs.UIUtils.ShowItemChoice(items, null, true, GiveItem, false);
+
+                    Pathea.UISystemNs.UIStateComm.Instance.SetCursor(true);
+                    itemMenu.OnCancelCallBack = delegate
+                    {
+                        Pathea.UISystemNs.UIStateComm.Instance.SetCursor(false);
+                    };
+                }
             }
 
         }

@@ -263,6 +263,7 @@ namespace KetwarooPortiaMod
         [Draw("Date mood bonus per kill in Ghost Cave event. (Other skill bonuses may apply if non-zero.")] public int GhostGameMoodBonusPerKill = 0;
         [Draw("Unlimited Talk Favour Gain")] public bool UnlimitedTalkFavourGain = false;
         [Draw("Talk Favour Gain Bonus")] public int TalkFavourGainBonus = 0;
+        [Draw("Sweetheart Atk/Def Buff")] public float SweetHeartbuff = 1.0F;
 
         [Header("Misc/Useless/Not Working")]
         [Draw("Ignore Water (Attempt to walk on water.)")] public bool IgnoreWater = false;
@@ -362,6 +363,7 @@ namespace KetwarooPortiaMod
     static class Pathea_ActorNs_Actor_Patches
     {
 
+
         [HarmonyPrefix]
         [HarmonyPatch("HpChangeEventTrigger")]
         static void PrefixHpChangeEventTrigger(Pathea.SkillNs.Caster caster, float hpChangeOrigin, float hpChanged, bool critical, Pathea.ActorNs.Actor __instance)
@@ -381,22 +383,29 @@ namespace KetwarooPortiaMod
         [HarmonyPatch("ConstAttrAttack", MethodType.Getter)]
         static void PostfixConstAttrAttack(ref float __result, Pathea.ActorNs.Actor __instance)
         {
-            if (!Main.enabled)
-                return;
+            if (__instance.IsActorType(ActorTag.Player))
+            {
+                __result *= Main.modSettings.PlayerStatsMultiplier;
+            }
+            else if (Pathea.FavorSystemNs.FavorRelationshipUtil.CanDate(__instance.InstanceId))
+            {
+                __result *= Main.modSettings.SweetHeartbuff;
+            }
 
-            if (!__instance.IsActorType(ActorTag.Player)) { return; }
-            __result *= Main.modSettings.PlayerStatsMultiplier;
         }
 
         [HarmonyPostfix]
         [HarmonyPatch("ConstAttrCpMax", MethodType.Getter)]
         static void PostfixConstAttrCpMax(ref float __result, Pathea.ActorNs.Actor __instance)
         {
-            if (!Main.enabled)
-                return;
-
-            if (!__instance.IsActorType(ActorTag.Player)) { return; }
-            __result *= Main.modSettings.PlayerStatsMultiplier;
+            if (__instance.IsActorType(ActorTag.Player))
+            {
+                __result *= Main.modSettings.PlayerStatsMultiplier;
+            }
+            else if (Pathea.FavorSystemNs.FavorRelationshipUtil.CanDate(__instance.InstanceId))
+            {
+                __result *= Main.modSettings.SweetHeartbuff;
+            }
         }
 
         [HarmonyPostfix]
@@ -412,16 +421,31 @@ namespace KetwarooPortiaMod
         [HarmonyPatch("ConstAttrDefence", MethodType.Getter)]
         static void PostfixConstAttrDefence(ref float __result, Pathea.ActorNs.Actor __instance)
         {
-            if (!__instance.IsActorType(ActorTag.Player)) { return; }
-            __result = Main.modSettings.PlayerDefenceBoost + __result * Main.modSettings.PlayerStatsMultiplier;
+            if (__instance.IsActorType(ActorTag.Player))
+            {
+                __result = Main.modSettings.PlayerDefenceBoost + __result * Main.modSettings.PlayerStatsMultiplier;
+
+            }
+            else if (Pathea.FavorSystemNs.FavorRelationshipUtil.CanDate(__instance.InstanceId))
+            {
+                __result *= Main.modSettings.SweetHeartbuff;
+            }
+
         }
 
         [HarmonyPostfix]
         [HarmonyPatch("ConstAttrHpMax", MethodType.Getter)]
         static void PostfixConstAttrHpMax(ref float __result, Pathea.ActorNs.Actor __instance)
         {
-            if (!__instance.IsActorType(ActorTag.Player)) { return; }
-            __result *= Main.modSettings.PlayerStatsMultiplier;
+            if (__instance.IsActorType(ActorTag.Player))
+            {
+
+                __result *= Main.modSettings.PlayerStatsMultiplier;
+            }
+            else if (Pathea.FavorSystemNs.FavorRelationshipUtil.CanDate(__instance.InstanceId))
+            {
+                __result *= Main.modSettings.SweetHeartbuff;
+            }
         }
 
         [HarmonyPostfix]
@@ -475,8 +499,18 @@ namespace KetwarooPortiaMod
             if (Input.GetKeyDown(Main.modSettings.DebugKey.keyCode))
             {
 
+                if (__instance.IsActorType(Pathea.ActorNs.ActorTag.Npc))
+                {
+                    Main.dmp("NPC", __instance.name);
+                    Main.dmp("-- can Date ", Pathea.FavorSystemNs.FavorRelationshipUtil.CanDate(__instance.InstanceId));
+                    Main.dmp("-- Favor", Pathea.FavorSystemNs.FavorManager.Self.GetFavorObject(__instance.InstanceId).FavorValue);
+                    Main.dmp("-- Level", __instance.Level.ToString());
+                    Main.dmp("-- Atk", __instance.ConstAttrAttack);
+                    Main.dmp("-- Def", __instance.ConstAttrDefence);
+                    Main.dmp("-- HpMax", __instance.ConstAttrHpMax);
+                    Main.dmp("-- CpMax", __instance.ConstAttrCpMax);
 
-
+                }
             }
 
             //if (__instance.IsActorType(ActorTag.Player)/* && Input.GetKeyDown(Main.modSettings.DebugKey.keyCode)*/)
@@ -589,13 +623,14 @@ namespace KetwarooPortiaMod
         [HarmonyPatch("ModifyFloat")]
         static void PostfixModifyFloat(ref float __result, Pathea.FeatureNs.FeatureType type)
         {
-            switch (type) {
+            switch (type)
+            {
                 case Pathea.FeatureNs.FeatureType.TalkFavor:
                     __result += Main.modSettings.TalkFavourGainBonus;
 
                     break;
             }
-             
+
         }
 
     }

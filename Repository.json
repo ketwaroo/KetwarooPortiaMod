@@ -2,7 +2,7 @@
     "Releases": [
         {
             "Id": "KetwarooPortiaMod",
-            "Version": "0.1.1621176837",
+            "Version": "0.1.1621466996",
             "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaMod.zip"
         },
         {
@@ -22,12 +22,12 @@
         },
         {
             "Id": "KetwarooPortiaModFarming",
-            "Version": "0.1.1621336895",
+            "Version": "0.1.1621458459",
             "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaModFarming.zip"
         },
         {
             "Id": "KetwarooPortiaModGiveItem",
-            "Version": "0.1.1620405946",
+            "Version": "0.1.1621785103",
             "DownloadUrl": "https://github.com/ketwaroo/KetwarooPortiaMod/releases/latest/download/KetwarooPortiaModGiveItem.zip"
         },
         {
